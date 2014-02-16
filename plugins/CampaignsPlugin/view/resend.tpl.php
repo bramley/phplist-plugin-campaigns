@@ -38,9 +38,9 @@
  */
 ?>
 <div>
-	<hr>
-	<?php echo $toolbar; ?>
-	<div style='margin-top: 10px;'>
+    <hr>
+    <?php echo $toolbar; ?>
+    <div style='margin-top: 10px;'>
         <?php echo $panel; ?>
     </div>
 </div>

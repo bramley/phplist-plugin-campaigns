@@ -25,21 +25,19 @@
  * This file contains the English text
  */
 $lan = array(
-	'plugin_title' => 'Messages Plugin',
-	'copy_prompt' => 'Are you sure that you want to copy the selected campaign?',
-	'delete_prompt' => 'Are you sure that you want to delete the selected campaign and all related data including link tracking?',
-	'delete_prompt' => 'This will delete the campaign and all related data including link tracking. Are you sure?',
-	'delete_prompt' => 'This will delete the all data for the campaign. If you have enabled click tracking then link clicks will no longer work. Are you sure?',
-	'delete_draft_prompt' => 'Are you sure that you want to delete all draft campaigns without a subject?',
-	'requeue_prompt' => 'Are you sure that you want to requeue the selected campaign?',
-	'Campaign %d copied to %d' => 'Campaign %d copied to %d',
-	'Unable to copy campaign %d' => 'Unable to copy campaign %d',
-	'ID' => 'ID',
-	'From' => 'From',
-	'Subject' => 'Subject',
-	'Entered' => 'Entered',
-	'Sent' => 'Sent',
-	'tab_sent' => 'Sent',
-	'tab_draft' => 'Draft',
-	'tab_active' => 'Active'
+    'plugin_title' => 'Messages Plugin',
+    'copy_prompt' => 'Are you sure that you want to copy the selected campaign?',
+    'delete_prompt' => 'This will delete the all data for the campaign. If you have enabled click tracking then link clicks will no longer work. Are you sure?',
+    'delete_draft_prompt' => 'Are you sure that you want to delete all draft campaigns without a subject?',
+    'requeue_prompt' => 'Are you sure that you want to requeue the selected campaign?',
+    'Campaign %d copied to %d' => 'Campaign %d copied to %d',
+    'Unable to copy campaign %d' => 'Unable to copy campaign %d',
+    'ID' => 'ID',
+    'From' => 'From',
+    'Subject' => 'Subject',
+    'Entered' => 'Entered',
+    'Sent' => 'Sent',
+    'tab_sent' => 'Sent',
+    'tab_draft' => 'Draft',
+    'tab_active' => 'Active'
 );

@@ -26,51 +26,51 @@
  */
 class CampaignsPlugin_DAO_Campaign extends CommonPlugin_DAO_Message
 {
-	private function wrapQuotes($v)
-	{
-		return "'$v'";
-	}
+    private function wrapQuotes($v)
+    {
+        return "'$v'";
+    }
 
-	public function campaigns($owner, array $statuses, $start, $limit)
-	{
-		$conditions = array();
+    public function campaigns($owner, array $statuses, $start, $limit)
+    {
+        $conditions = array();
 
-		if ($owner)
-			$conditions[] = "(owner = $owner)";
+        if ($owner)
+            $conditions[] = "(owner = $owner)";
 
-		if (count($statuses) > 0) {
-			$values = implode(',', array_map(array($this, 'wrapQuotes'), $statuses));
-			$conditions[] = "(status IN ($values))";
-		}
+        if (count($statuses) > 0) {
+            $values = implode(',', array_map(array($this, 'wrapQuotes'), $statuses));
+            $conditions[] = "(status IN ($values))";
+        }
 
-		$where = count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '';
-		$sql =
-			"SELECT * FROM {$this->tables['message']}
-			$where
-			ORDER BY id DESC
-			LIMIT $start, $limit";
+        $where = count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '';
+        $sql =
+            "SELECT * FROM {$this->tables['message']}
+            $where
+            ORDER BY id DESC
+            LIMIT $start, $limit";
 
-		return $this->dbCommand->queryAll($sql);
-	}
+        return $this->dbCommand->queryAll($sql);
+    }
 
-	public function totalCampaigns($owner, array $statuses) {
-		$conditions = array();
+    public function totalCampaigns($owner, array $statuses) {
+        $conditions = array();
 
-		if ($owner)
-			$conditions[] = "(owner = $owner)";
+        if ($owner)
+            $conditions[] = "(owner = $owner)";
 
-		if (count($statuses) > 0) {
-			$values = implode(',', array_map(array($this, 'wrapQuotes'), $statuses));
-			$conditions[] = "(status IN ($values))";
-		}
+        if (count($statuses) > 0) {
+            $values = implode(',', array_map(array($this, 'wrapQuotes'), $statuses));
+            $conditions[] = "(status IN ($values))";
+        }
 
-		$where = count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '';
-		$sql =
-			"SELECT count(*) AS t 
-			FROM {$this->tables['message']} m
-			$where";
+        $where = count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '';
+        $sql =
+            "SELECT count(*) AS t 
+            FROM {$this->tables['message']} m
+            $where";
 
-		return $this->dbCommand->queryOne($sql, 't');
-	}
+        return $this->dbCommand->queryOne($sql, 't');
+    }
 }
 

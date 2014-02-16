@@ -44,41 +44,41 @@
  * radio - radio buttons name
  * url - URL for form action
  */
-	var form = document.forms[name];
-	var radios = form.elements[radio];
+    var form = document.forms[name];
+    var radios = form.elements[radio];
 
-	if (!radios.length) {
-		radios = [radios];
-	}
-	var found = false;
+    if (!radios.length) {
+        radios = [radios];
+    }
+    var found = false;
 
-	for (i = 0; i < radios.length; i++){
-		if (radios[i].checked == true) {
-			found = true;
-		}
-	}
+    for (i = 0; i < radios.length; i++){
+        if (radios[i].checked == true) {
+            found = true;
+        }
+    }
 
-	if (select && !found) {
-		alert('A campaign must be selected');
-	} else {
-		if (prompt == '' || confirm(prompt)) {
-			form.action = url;
-			form.submit();
-		}
-	}
+    if (select && !found) {
+        alert('A campaign must be selected');
+    } else {
+        if (prompt == '' || confirm(prompt)) {
+            form.action = url;
+            form.submit();
+        }
+    }
 }
 </script>
 <div id="top">
-	<hr/>
+    <hr/>
 <?php echo $toolbar; ?>
 <?php echo $tabs; ?>
-	<div style='padding-top: 10px;' >
+    <div style='padding-top: 10px;' >
 <?php if (isset($actionResult)): ?>
         <div class="note"><?php echo $actionResult; ?></div>
 <?php endif; ?>
-		<form name='<?php echo $formName; ?>' method='post'>
+        <form name='<?php echo $formName; ?>' method='post'>
 <?php echo $listing; ?>
-		</form>
-	</div>
-	<a href='#top'>[<?php echo $this->i18n->get('top') ?>]</a>
+        </form>
+    </div>
+    <a href='#top'>[<?php echo $this->i18n->get('top') ?>]</a>
 </div>
