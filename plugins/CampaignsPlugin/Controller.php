@@ -189,8 +189,14 @@ class CampaignsPlugin_Controller
          * Populates the webbler list with campaign details
          */
         $w->title = $this->i18n->get('Campaigns');
+        $rows = $this->model->campaigns($start, $limit);
 
-        foreach ($this->model->campaigns($start, $limit) as $row) {
+        if (count($rows) == 0) {
+            return;
+        }
+        $type = $this->model->type;
+
+        foreach ($rows as $row) {
             $key = $row['id'];
             $w->addElement($key, new CommonPlugin_PageURL('message', array('id' => $row['id'])));
             $details = array(
@@ -199,7 +205,7 @@ class CampaignsPlugin_Controller
                 sprintf('%s: %s', $this->i18n->get('Entered'), $row['entered'])
             );
 
-            if ($this->model->type == 'sent') {
+            if ($type == 'sent') {
                 $details[] = sprintf('%s: %s', $this->i18n->get('Sent'), $row['sent']);
             } else {
                 $details[] = sprintf('%s: %s', $this->i18n->get('Embargo'), $row['embargo']);
@@ -209,12 +215,14 @@ class CampaignsPlugin_Controller
             $select = CHtml::radioButton(self::RADIONAME, false, array('value' => $key));
             $w->addColumnHtml($key, 'select', $select);
         }
-        $query = array('type' => $this->model->type);
 
-         if ($this->model->type == 'sent') {
+        $query = array('type' => $type);
+
+        if ($type == 'sent') {
             $this->addButton($w, 'Resend', true, '', array('action' => 'resend'));
         }
-         if ($this->model->type == 'sent' || $this->model->type == 'active') {
+
+        if ($type == 'sent' || $type == 'active') {
             $query['action'] = 'requeue';
             $this->addButton($w, 'Requeue', true, $this->i18n->get('requeue_prompt'), $query);
         }
@@ -224,7 +232,7 @@ class CampaignsPlugin_Controller
         $query['action'] = 'delete';
         $this->addButton($w, 'Delete', true, $this->i18n->get('delete_prompt'), $query);
 
-        if ($this->model->type == 'draft') {
+        if ($type == 'draft') {
             $query['action'] = 'deleteDrafts';
             $this->addButton($w, 'Delete drafts', false, $this->i18n->get('delete_draft_prompt'), $query);
         }
