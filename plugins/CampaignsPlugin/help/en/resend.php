@@ -1,43 +1,27 @@
-<p>Here is the help for the message resend form.</p>
+<p>This page lets you specify subscribers who have already been sent the campaign, but who you want to send to again.</p>
+<p>To achieve this the plugin will remove rows from the usermessage table for the specified subscribers, so it then appears that
+they have not yet been sent the campaign. Those subscribers will then be included when the campaign is next sent.<p>
+
 <table>
-<tr>
-<td>ID</td>
-<td>The message ID</td>
+<tr >
+<td>Campaign</td>
+<td>The campaign ID and subject</td>
 </tr>
-<tr>
-<td>Details</td>
-<td>The From address, the Subject, the time that the message was created, and, for Sent messages, the time the message was last sent.</td>
+<tr >
+<td>email addresses</td>
+<td>Enter the email addresses of the subscribers to whom the campaign has already been sent.</td>
 </tr>
-<tr>
-<td>Status</td>
-<td>The message status.</td>
+<tr >
+<td>Delete associated bounce records</td>
+<td>Whether the plugin should delete bounces for the campaign/subscribers. This allows you to resend to a bounced address
+and also remove the bounces.</td>
 </tr>
-<tr>
-<td>Resend button</td>
-<td>Displays the Resend tab from where you can resend the message to selected users.</td>
+<tr >
+<td>Adjust campaign totals</td>
+<td>Whether to decrement the 'processed' and 'ashtml' or 'astext' totals for the campaign for each subscriber.</td>
 </tr>
-<tr>
-<td>Requeue button</td>
-<td>Requeues the selected message, setting it to queued status, and displays the Queued tab.</td>
-</tr>
-<tr>
-<td>Copy button</td>
-<td>Creates a new message, setting the subject, from, to and replyto addresses, message content and message format from the selected message.
-The new message is set to draft status.
-</td>
-</tr>
-<tr>
-<td>Delete button</td>
-<td>Deletes the selected message.</td>
-</tr>
-<tr>
-<td>Delete drafts button</td>
-<td>Deletes all draft messages that have either an empty subject or the default value "(no subject)". This is the same as the
-"delete all draft messages without subject" command on the core phplist draft messages tab.</td>
-</tr>
-<tr>
-<td>Edit button</td>
-<td>Transfers to the phplist send page to edit the selected message.</td>
+<tr >
+<td>Requeue the campaign</td>
+<td>Whether to resubmit the campaign.</td>
 </tr>
 </table>
-
