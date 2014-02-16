@@ -27,7 +27,7 @@
 $lan = array(
     'plugin_title' => 'Messages Plugin',
     'copy_prompt' => 'Are you sure that you want to copy the selected campaign?',
-    'delete_prompt' => 'This will delete the all data for the campaign. If you have enabled click tracking then link clicks will no longer work. Are you sure?',
+    'delete_prompt' => 'This will delete all data for the campaign. If you have enabled click tracking then link clicks will no longer work. Are you sure?',
     'delete_draft_prompt' => 'Are you sure that you want to delete all draft campaigns without a subject?',
     'requeue_prompt' => 'Are you sure that you want to requeue the selected campaign?',
     'Campaign %d copied to %d' => 'Campaign %d copied to %d',
@@ -36,8 +36,11 @@ $lan = array(
     'From' => 'From',
     'Subject' => 'Subject',
     'Entered' => 'Entered',
+    'Embargo' => 'Embargo',
     'Sent' => 'Sent',
     'tab_sent' => 'Sent',
     'tab_draft' => 'Draft',
-    'tab_active' => 'Active'
+    'tab_active' => 'Active',
+    'Campaign' => 'Campaign',
+    'Campaigns' => 'Campaigns'
 );
