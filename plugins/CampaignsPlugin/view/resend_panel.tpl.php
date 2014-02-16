@@ -70,8 +70,8 @@
     <form method='POST' action='<?php echo $action; ?>'>
         <table>
             <tr>
-                <td WIDTH='30%'><?php echo $this->i18n->get('Campaign ID'); ?></td>
-                <td WIDTH='70%'><?php echo $model->campaignID ?></td>
+                <td WIDTH='30%'><?php echo $this->i18n->get('Campaign'); ?></td>
+                <td WIDTH='70%'><?php echo sprintf('%s | %s', $model->campaignID, $model->subject); ?></td>
             </tr>
             <tr>
                 <td><?php echo $this->i18n->get('email addresses (separated by whitespace)'); ?></td>

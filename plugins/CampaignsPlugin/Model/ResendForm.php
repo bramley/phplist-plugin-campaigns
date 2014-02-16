@@ -41,6 +41,8 @@ class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
         'totals' => 0,
         'requeue' => 1
     );
+
+    public $subject;
     /*
      *    Inherited protected variables
      */
@@ -62,12 +64,21 @@ class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
         $this->properties = $this->defaults;
         parent::__construct('CampaignsPlugin');
     }
+    public function setProperties(array $properties)
+    {
+        parent::setProperties($properties);
+
+        if ($this->campaignID) {
+            $row = $this->dao->messageById($this->campaignID);
+            $this->subject = $row['subject'];
+        }
+    }
 
     public function loadBouncedEmails()
     {
         $emails = $this->dao->bouncedEmails($this->campaignID);
 //        $this->setProperties(array('emails' => implode("\n", $emails)));
-        $this->setProperties(array('emails' => ''));
+        $this->emails = '';
         return 0;
         return count($emails);
     }
