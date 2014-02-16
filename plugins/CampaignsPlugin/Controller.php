@@ -42,8 +42,8 @@ class CampaignsPlugin_Controller
 
         $tabs = new CommonPlugin_Tabs();
 
-        foreach ($captions as $k => $v) {
-            $tabs->addTab($captions[$k], new CommonPlugin_PageURL(null, array('type' => $k)));
+        foreach ($captions as $key => $value) {
+            $tabs->addTab($value, new CommonPlugin_PageURL(null, array('type' => $key)));
         }
 
         $tabs->setCurrent($captions[$type]);
