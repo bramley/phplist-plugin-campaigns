@@ -25,7 +25,7 @@
  * This file contains the English text
  */
 $lan = array(
-    'plugin_title' => 'Messages Plugin',
+    'plugin_title' => 'Campaigns Plugin',
     'copy_prompt' => 'Are you sure that you want to copy the selected campaign?',
     'delete_prompt' => 'This will delete all data for the campaign. If you have enabled click tracking then link clicks will no longer work. Are you sure?',
     'delete_draft_prompt' => 'Are you sure that you want to delete all draft campaigns without a subject?',
