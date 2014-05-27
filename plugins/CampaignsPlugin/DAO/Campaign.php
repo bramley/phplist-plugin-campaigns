@@ -36,18 +36,24 @@ class CampaignsPlugin_DAO_Campaign extends CommonPlugin_DAO_Message
         $conditions = array();
 
         if ($owner)
-            $conditions[] = "(owner = $owner)";
+            $conditions[] = "(m.owner = $owner)";
 
         if (count($statuses) > 0) {
             $values = implode(',', array_map(array($this, 'wrapQuotes'), $statuses));
-            $conditions[] = "(status IN ($values))";
+            $conditions[] = "(m.status IN ($values))";
         }
 
         $where = count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '';
         $sql =
-            "SELECT * FROM {$this->tables['message']}
+            "SELECT m.*,
+                (SELECT GROUP_CONCAT(l.name SEPARATOR '|')
+                    FROM {$this->tables['list']} l
+                    JOIN {$this->tables['listmessage']} lm ON lm.listid = l.id
+                    WHERE lm.messageid = m.id
+                ) AS lists
+            FROM {$this->tables['message']} m
             $where
-            ORDER BY id DESC
+            ORDER BY m.id DESC
             LIMIT $start, $limit";
 
         return $this->dbCommand->queryAll($sql);

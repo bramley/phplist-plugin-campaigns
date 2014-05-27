@@ -197,11 +197,10 @@ class CampaignsPlugin_Controller
         $type = $this->model->type;
 
         foreach ($rows as $row) {
-            $key = $row['id'];
+            $key = "$row[id] | $row[subject]";
             $w->addElement($key, new CommonPlugin_PageURL('message', array('id' => $row['id'])));
             $details = array(
                 sprintf('%s: %s', $this->i18n->get('From'), $row['fromfield']),
-                sprintf('%s: %s', $this->i18n->get('Subject'), $row['subject']),
                 sprintf('%s: %s', $this->i18n->get('Entered'), $row['entered'])
             );
 
@@ -211,6 +210,7 @@ class CampaignsPlugin_Controller
                 $details[] = sprintf('%s: %s', $this->i18n->get('Embargo'), $row['embargo']);
             }
             $w->addColumnHtml($key, 'details', implode('<br>', $details));
+            $w->addColumnHtml($key, 'lists', str_replace('|', '<br>', htmlspecialchars($row['lists'])), '');
             $w->addColumn($key, 'status', $row['status'], '');
             $select = CHtml::radioButton(self::RADIONAME, false, array('value' => $key));
             $w->addColumnHtml($key, 'select', $select);
