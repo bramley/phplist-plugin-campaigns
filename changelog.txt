@@ -1,3 +1,6 @@
+version 2014-05-28
+      Fix for GitHub issue #2
+
 version 2014-05-27
       Add column displaying lists to which the message has been sent, GitHub issue #1
 

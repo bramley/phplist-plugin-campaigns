@@ -212,7 +212,7 @@ class CampaignsPlugin_Controller
             $w->addColumnHtml($key, 'details', implode('<br>', $details));
             $w->addColumnHtml($key, 'lists', str_replace('|', '<br>', htmlspecialchars($row['lists'])), '');
             $w->addColumn($key, 'status', $row['status'], '');
-            $select = CHtml::radioButton(self::RADIONAME, false, array('value' => $key));
+            $select = CHtml::radioButton(self::RADIONAME, false, array('value' => $row['id']));
             $w->addColumnHtml($key, 'select', $select);
         }
 

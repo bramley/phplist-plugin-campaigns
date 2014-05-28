@@ -51,5 +51,6 @@ This should contain
 ## Version history ##
 
     version     Description
+    2014-05-28  Fix for GitHub issue #2
     2014-05-27  Add column to display lists
     2014-02-15  Initial version
