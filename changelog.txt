@@ -1,3 +1,6 @@
+version 2015-03-23
+      Change to autoload approach
+
 version 2014-05-28
       Fix for GitHub issue #2
 
