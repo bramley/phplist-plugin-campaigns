@@ -51,6 +51,7 @@ This should contain
 ## Version history ##
 
     version     Description
+    2015-05-30  Add German translation
     2015-03-23  Change to autoload approach
     2014-05-28  Fix for GitHub issue #2
     2014-05-27  Add column to display lists

@@ -50,6 +50,22 @@ class CampaignsPlugin_Controller
         return $tabs;
     }
 
+    private function addButton(WebblerListing $w, $caption, $select, $prompt, array $query)
+    {
+        $w->addButton(
+            $caption,
+            sprintf(
+                "javascript:formSubmit(%s, '%s', '%s', '%s', '%s', '%s')",
+                $select ? 'true' : 'false',
+                $prompt,
+                self::FORMNAME,
+                self::RADIONAME,
+                new CommonPlugin_PageURL(null, $query),
+                $this->i18n->get('campaign_select_error')
+            )
+        );
+    }
+
     protected function actionResendFormSubmit()
     {
         $model = new CampaignsPlugin_Model_ResendForm($this->db);
@@ -90,7 +106,7 @@ class CampaignsPlugin_Controller
             $params += $_SESSION[self::PLUGIN];
             unset($_SESSION[self::PLUGIN]);
         }
-        $panel = new UIPanel('Resend campaign', $this->render(dirname(__FILE__) . '/view/resend_panel.tpl.php', $params));
+        $panel = new UIPanel($this->i18n->get('Resend campaign'), $this->render(dirname(__FILE__) . '/view/resend_panel.tpl.php', $params));
         print $this->render(
             dirname(__FILE__) . '/view/resend.tpl.php', array(
                 'toolbar' => $toolbar->display(),
@@ -209,44 +225,36 @@ class CampaignsPlugin_Controller
             } else {
                 $details[] = sprintf('%s: %s', $this->i18n->get('Embargo'), $row['embargo']);
             }
-            $w->addColumnHtml($key, 'details', implode('<br>', $details));
-            $w->addColumnHtml($key, 'lists', str_replace('|', '<br>', htmlspecialchars($row['lists'])), '');
-            $w->addColumn($key, 'status', $row['status'], '');
+            $w->addColumnHtml($key, $this->i18n->get('details'), implode('<br>', $details));
+            $w->addColumnHtml($key, $this->i18n->get('lists'), str_replace('|', '<br>', htmlspecialchars($row['lists'])), '');
+            $w->addColumn($key, $this->i18n->get('status'), $row['status'], '');
             $select = CHtml::radioButton(self::RADIONAME, false, array('value' => $row['id']));
-            $w->addColumnHtml($key, 'select', $select);
+            $w->addColumnHtml($key, $this->i18n->get('select'), $select);
         }
 
         $query = array('type' => $type);
 
         if ($type == 'sent') {
-            $this->addButton($w, 'Resend', true, '', array('action' => 'resend'));
+            $this->addButton($w, $this->i18n->get('resend_button'), true, '', array('action' => 'resend'));
         }
 
         if ($type == 'sent' || $type == 'active') {
             $query['action'] = 'requeue';
-            $this->addButton($w, 'Requeue', true, $this->i18n->get('requeue_prompt'), $query);
+            $this->addButton($w, $this->i18n->get('requeue_button'), true, $this->i18n->get('requeue_prompt'), $query);
         }
         $query['action'] = 'copy';
-        $this->addButton($w, 'Copy', true, $this->i18n->get('copy_prompt'), $query);
+        $this->addButton($w, $this->i18n->get('copy_button'), true, $this->i18n->get('copy_prompt'), $query);
 
         $query['action'] = 'delete';
-        $this->addButton($w, 'Delete', true, $this->i18n->get('delete_prompt'), $query);
+        $this->addButton($w, $this->i18n->get('delete_button'), true, $this->i18n->get('delete_prompt'), $query);
 
         if ($type == 'draft') {
             $query['action'] = 'deleteDrafts';
-            $this->addButton($w, 'Delete drafts', false, $this->i18n->get('delete_draft_prompt'), $query);
+            $this->addButton($w, $this->i18n->get('delete_drafts_button'), false, $this->i18n->get('delete_draft_prompt'), $query);
         }
 
         $query['action'] = 'edit';
-        $this->addButton($w, 'Edit', true, '', $query);
-    }
-
-    private function addButton(WebblerListing $w, $caption, $select, $prompt, array $query)
-    {
-        $w->addButton($caption, sprintf(
-            "javascript:formSubmit(%s, '%s', '%s', '%s', '%s')",
-            $select ? 'true' : 'false', $prompt, self::FORMNAME, self::RADIONAME, new CommonPlugin_PageURL(null, $query)
-        ));
+        $this->addButton($w, $this->i18n->get('edit_button'), true, '', $query);
     }
 
     public function total()

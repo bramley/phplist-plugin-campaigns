@@ -36,7 +36,7 @@
 ?>
 <script language="javascript" type="text/javascript">
 
- function formSubmit(select, prompt, name, radio, url) {
+ function formSubmit(select, prompt, name, radio, url, errortext) {
 /**
  * select - whether a radio button must be selected
  * prompt - confirmation prompt, empty if not required
@@ -59,7 +59,7 @@
     }
 
     if (select && !found) {
-        alert('A campaign must be selected');
+        alert(errortext);
     } else {
         if (prompt == '' || confirm(prompt)) {
             form.action = url;

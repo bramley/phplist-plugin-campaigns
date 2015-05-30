@@ -25,10 +25,19 @@ class CampaignsPlugin extends phplistPlugin
     public $topMenuLinks = array(
         'main' => array('category' => 'campaigns')
     );
-    public $pageTitles = array(
-        'main' => 'Manage campaigns'
-    );
+    
+    public function sendFormats()
+    {
+        global $plugins;
 
+        require_once $plugins['CommonPlugin']->coderoot . 'Autoloader.php';
+        $i18n = new CommonPlugin_I18N($this);
+        $this->pageTitles = array(
+            'main' => $i18n->get('Manage campaigns'),
+        );
+        return null;
+    }
+    
     public function adminmenu() {
         return $this->pageTitles;
     }
