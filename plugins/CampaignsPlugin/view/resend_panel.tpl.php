@@ -92,7 +92,7 @@
                 <td><?php echo CHtml::checkBox('requeue', $model->requeue, array('uncheckValue' => 0)); ?></td>
             </tr>
         </table>
-        <input type=submit value='Submit' name='submit' />
+        <input type=submit value="<?php echo $this->i18n->get('Submit') ?>" name='submit' />
     </form>
 
 
