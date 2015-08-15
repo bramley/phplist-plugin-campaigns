@@ -20,10 +20,9 @@ The plugin adds an item to the Campaigns menu to display a page of campaigns org
 
 ### Dependencies ###
 
-Requires php version 5.2 or later.
+Requires php version 5.3 or later.
 
-Requires the Common Plugin version 2015-03-23 or later to be installed. You should install or upgrade to the latest version.
-
+Requires the Common Plugin version 3 to be installed. You should install or upgrade to the latest version.
 See <https://github.com/bramley/phplist-plugin-common>
 
 ### Set the plugin directory ###
@@ -51,8 +50,9 @@ This should contain
 ## Version history ##
 
     version     Description
-    2015-05-30  Add German translation
-    2015-03-23  Change to autoload approach
-    2014-05-28  Fix for GitHub issue #2
-    2014-05-27  Add column to display lists
-    2014-02-15  Initial version
+    2.0.0+20150815  Added dependencies
+    2015-05-30      Add German translation
+    2015-03-23      Change to autoload approach
+    2014-05-28      Fix for GitHub issue #2
+    2014-05-27      Add column to display lists
+    2014-02-15      Initial version
