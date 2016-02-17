@@ -1,6 +1,6 @@
 <p>The Sent tab lists messages whose status is 'sent'.</p>
-<p>The Draft tab lists messages whose status is 'draft'.</p>
 <p>The Active tab lists messages whose status is 'submitted' 'inprocess' or 'suspended'.</p>
+<p>The Draft tab lists messages whose status is 'draft'.</p>
 <table>
 <tr>
 <td>ID</td>
@@ -19,12 +19,12 @@ and, on the Draft and Active tabs, the embargo date.</td>
 <tr>
 <td>Resend button</td>
 <td>This button is shown only on the Sent tab. Displays the Resend page from where you can resend the message
- to selected users.</td>
+ to selected subscribers.</td>
 </tr>
 <tr>
 <td>Requeue button</td>
 <td>This button is shown on the Sent and Active tabs. Requeues the selected message, setting it to queued 
-status, and displays the Queued tab.</td>
+status, and displays the Active tab.</td>
 </tr>
 <tr>
 <td>Copy button</td>

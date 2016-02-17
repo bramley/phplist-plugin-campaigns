@@ -7,7 +7,7 @@
  * @category  phplist
  * @package   CampaignsPlugin
  * @author    Duncan Cameron
- * @copyright 2014 Duncan Cameron
+ * @copyright 2014-2016 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
  */
 
@@ -25,7 +25,8 @@ class CampaignsPlugin extends phplistPlugin
     public $topMenuLinks = array(
         'main' => array('category' => 'campaigns')
     );
-    
+    public $documentationUrl = 'https://resources.phplist.com/plugin/campaigns';
+
     public function __construct() {
         $this->coderoot = dirname(__FILE__) . '/CampaignsPlugin/';
         $this->version = (is_file($f = $this->coderoot . self::VERSION_FILE))
@@ -53,6 +54,9 @@ class CampaignsPlugin extends phplistPlugin
         );
     }
 
+    /**
+     * Use this hook for translated menu items.
+     */
     public function sendFormats()
     {
         global $plugins;
@@ -62,7 +66,6 @@ class CampaignsPlugin extends phplistPlugin
         $this->pageTitles = array(
             'main' => $i18n->get('Manage campaigns'),
         );
-        return null;
     }
     
     public function adminmenu() {

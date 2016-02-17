@@ -36,8 +36,8 @@ class CampaignsPlugin_Controller
     {
         $captions = array(
             'sent' => $this->i18n->get('tab_sent'),
-            'draft' => $this->i18n->get('tab_draft'),
             'active' => $this->i18n->get('tab_active'),
+            'draft' => $this->i18n->get('tab_draft'),
         );
 
         $tabs = new CommonPlugin_Tabs();
@@ -54,7 +54,7 @@ class CampaignsPlugin_Controller
     {
         $w->addButton(
             $caption,
-            sprintf(
+            htmlspecialchars(sprintf(
                 "javascript:formSubmit(%s, '%s', '%s', '%s', '%s', '%s')",
                 $select ? 'true' : 'false',
                 $prompt,
@@ -62,7 +62,7 @@ class CampaignsPlugin_Controller
                 self::RADIONAME,
                 new CommonPlugin_PageURL(null, $query),
                 $this->i18n->get('campaign_select_error')
-            )
+            ))
         );
     }
 
@@ -151,7 +151,7 @@ class CampaignsPlugin_Controller
         $_SESSION[self::PLUGIN]['actionResult'] = $r
             ? $this->i18n->get('Campaign %d deleted', $this->model->{self::RADIONAME})
             : $this->i18n->get('Unable to delete %d ', $this->model->{self::RADIONAME});
-        header('Location: ' . new CommonPlugin_PageURL(null, array('type' => $this->model->type)));
+        header('Location: ' . $this->model->redirect);
         exit;
     }
 
@@ -159,7 +159,7 @@ class CampaignsPlugin_Controller
     {
         $r = $this->model->deleteDraftMessages();
         $_SESSION[self::PLUGIN]['actionResult'] = $this->i18n->get('%d campaigns deleted', $r);
-        header('Location: ' . new CommonPlugin_PageURL(null, array('type' => $this->model->type)));
+        header('Location: ' . new CommonPlugin_PageURL(null, array('type' => 'draft')));
         exit;
     }
 
@@ -232,29 +232,40 @@ class CampaignsPlugin_Controller
             $w->addColumnHtml($key, $this->i18n->get('select'), $select);
         }
 
-        $query = array('type' => $type);
-
         if ($type == 'sent') {
             $this->addButton($w, $this->i18n->get('resend_button'), true, '', array('action' => 'resend'));
         }
 
         if ($type == 'sent' || $type == 'active') {
-            $query['action'] = 'requeue';
-            $this->addButton($w, $this->i18n->get('requeue_button'), true, $this->i18n->get('requeue_prompt'), $query);
+            $this->addButton(
+                $w,
+                $this->i18n->get('requeue_button'),
+                true,
+                $this->i18n->get('requeue_prompt'),
+                array('action' => 'requeue')
+            );
         }
-        $query['action'] = 'copy';
-        $this->addButton($w, $this->i18n->get('copy_button'), true, $this->i18n->get('copy_prompt'), $query);
+        $this->addButton($w, $this->i18n->get('copy_button'), true, $this->i18n->get('copy_prompt'), array('action' => 'copy'));
 
-        $query['action'] = 'delete';
-        $this->addButton($w, $this->i18n->get('delete_button'), true, $this->i18n->get('delete_prompt'), $query);
+        $this->addButton(
+            $w,
+            $this->i18n->get('delete_button'),
+            true,
+            $this->i18n->get('delete_prompt'),
+            array('action' => 'delete', 'redirect' => urlencode($_SERVER["REQUEST_URI"]))
+        );
 
         if ($type == 'draft') {
-            $query['action'] = 'deleteDrafts';
-            $this->addButton($w, $this->i18n->get('delete_drafts_button'), false, $this->i18n->get('delete_draft_prompt'), $query);
+            $this->addButton(
+                $w,
+                $this->i18n->get('delete_drafts_button'),
+                false,
+                $this->i18n->get('delete_draft_prompt'),
+                array('action' => 'deleteDrafts')
+            );
         }
 
-        $query['action'] = 'edit';
-        $this->addButton($w, $this->i18n->get('edit_button'), true, '', $query);
+        $this->addButton($w, $this->i18n->get('edit_button'), true, '', array('action' => 'edit'));
     }
 
     public function total()

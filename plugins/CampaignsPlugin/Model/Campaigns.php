@@ -38,6 +38,7 @@ class CampaignsPlugin_Model_Campaigns extends CommonPlugin_Model
     protected $properties = array(
         'campaignID' => null,
         'type' => 'sent',
+        'redirect' => null,
     );
     protected $persist = array(
         'type' => ''
