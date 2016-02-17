@@ -1,8 +1,13 @@
+version 2.1.0+20160217
+      Return to original page after deleting a campaign
+      Re-order tabs to match core phplist
+      Tidy-up of code
+      Coding standard changes
+
 version 2.0.0+20150815
       Add dependencies
 
 version 2015-05-30
-MarcelvC (1):
       Made all output displayed to the user translatable; added German translation
 
 version 2015-03-23

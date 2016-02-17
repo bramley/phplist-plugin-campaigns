@@ -14,7 +14,7 @@ It also provides the core phplist functions of requeue and delete drafts.
 Be careful if you have enabled click tracking and delete a "sent" message, as the campaign's click tracking data
 will also be deleted and clicks of links in the campaign will no longer work.
 
-The plugin adds an item to the Campaigns menu to display a page of campaigns organised in three tabs - Sent, Draft and Active.
+The plugin adds an item to the Campaigns menu to display a page of campaigns organised in three tabs - Sent, Active and Draft.
 
 ## Installation ##
 
@@ -50,6 +50,7 @@ This should contain
 ## Version history ##
 
     version     Description
+    2.1.0+20160217  Return to original page after deleting a campaign
     2.0.0+20150815  Added dependencies
     2015-05-30      Add German translation
     2015-03-23      Change to autoload approach

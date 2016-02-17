@@ -1,6 +1,6 @@
 <?php
 /**
- * CampaignsPlugin for phplist
+ * CampaignsPlugin for phplist.
  * 
  * This file is a part of CampaignsPlugin.
  *
@@ -14,18 +14,18 @@
  * GNU General Public License for more details.
  * 
  * @category  phplist
- * @package   CampaignsPlugin
+ *
  * @author    Duncan Cameron
- * @copyright 2014 Duncan Cameron
+ * @copyright 2014-2016 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
+ *
  * @link      http://forums.phplist.com/
  */
 
 /**
- * This class holds the properties entered in the form
+ * This class holds the properties entered in the form.
  * 
  * @category  phplist
- * @package   ResendMessagePlugin
  */
 class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
 {
@@ -39,7 +39,7 @@ class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
         'emails' => null,
         'bounce' => 1,
         'totals' => 0,
-        'requeue' => 1
+        'requeue' => 1,
     );
 
     public $subject;
@@ -52,7 +52,7 @@ class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
         'emails' => '',
         'bounce' => '',
         'totals' => '',
-        'requeue' => ''
+        'requeue' => '',
     );
     /*
      *    Public methods
@@ -79,7 +79,9 @@ class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
         $emails = $this->dao->bouncedEmails($this->campaignID);
 //        $this->setProperties(array('emails' => implode("\n", $emails)));
         $this->emails = '';
+
         return 0;
+
         return count($emails);
     }
 
@@ -101,7 +103,6 @@ class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
         $emails = preg_split('/\s+/', $this->emails, null, PREG_SPLIT_NO_EMPTY);
 
         foreach ($emails as $email) {
-
             if (!(filter_var($email, FILTER_VALIDATE_EMAIL))) {
                 $invalid[] = $email;
                 continue;
@@ -118,8 +119,9 @@ class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
                 $deleted[] = $email;
 
                 if ($this->bounce) {
-                    if ($this->dao->deleteBounces($campaignID, $userID) > 0)
+                    if ($this->dao->deleteBounces($campaignID, $userID) > 0) {
                         $bounced[] = $email;
+                    }
                 }
 
                 if ($this->totals) {
@@ -142,7 +144,7 @@ class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
                 'ignored' => $ignored,
                 'notsent' => $notsent,
                 'requeued' => $requeued,
-                'invalid' => $invalid
+                'invalid' => $invalid,
         );
     }
 }

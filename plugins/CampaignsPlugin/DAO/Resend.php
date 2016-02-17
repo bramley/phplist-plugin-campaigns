@@ -1,6 +1,6 @@
 <?php
 /**
- * CampaignsPlugin for phplist
+ * CampaignsPlugin for phplist.
  * 
  * This file is a part of CampaignsPlugin.
  *
@@ -14,18 +14,17 @@
  * GNU General Public License for more details.
  * 
  * @category  phplist
- * @package   CampaignsPlugin
+ *
  * @author    Duncan Cameron
- * @copyright 2014 Duncan Cameron
+ * @copyright 2014-2016 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
+ *
  * @link      http://forums.phplist.com/
  */
 
 /**
- * This class provides access to the phplist database
- * 
+ * This class provides access to the phplist database.
  */
-
 class CampaignsPlugin_DAO_Resend extends CommonPlugin_DAO_Message
 {
     public function deleteSent($mid, $userid)
@@ -59,45 +58,45 @@ class CampaignsPlugin_DAO_Resend extends CommonPlugin_DAO_Message
         $count = $this->dbCommand->queryAffectedRows($sql);
 
         if ($count > 0) {
-            $sql = 
+            $sql =
                 "DELETE FROM {$this->tables['user_message_bounce']}
                 WHERE user = $userid AND message = $mid";
             $this->dbCommand->queryAffectedRows($sql);
 
-            $sql = 
+            $sql =
                 "UPDATE {$this->tables['message']}
                 SET bouncecount = bouncecount - 1 
                 WHERE id = $mid";
             $this->dbCommand->queryAffectedRows($sql);
 
-            $sql = 
+            $sql =
                 "UPDATE {$this->tables['user']} 
                 SET bouncecount = bouncecount - 1 
                 WHERE id = $userid";
             $this->dbCommand->queryAffectedRows($sql);
         }
+
         return $count;
     }
 
     public function adjustTotals($mid)
     {
-        $sql = 
+        $sql =
             "UPDATE {$this->tables['message']}
             SET processed = processed - 1 
             WHERE id = $mid";
         $count = $this->dbCommand->queryAffectedRows($sql);
 
-        $sql = 
+        $sql =
             "UPDATE {$this->tables['message']} 
             SET ashtml = ashtml - 1 
             WHERE id = $mid AND sendformat = 'HTML'";
         $count = $this->dbCommand->queryAffectedRows($sql);
 
-        $sql = 
+        $sql =
             "UPDATE {$this->tables['message']} 
             SET astext = astext - 1 
             WHERE id = $mid AND sendformat = 'text'";
         $count = $this->dbCommand->queryAffectedRows($sql);
     }
-
 }

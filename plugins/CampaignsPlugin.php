@@ -1,16 +1,15 @@
 <?php
 /**
- * CampaignsPlugin for phplist
+ * CampaignsPlugin for phplist.
  * 
  * This file is a part of CampaignsPlugin.
  *
  * @category  phplist
- * @package   CampaignsPlugin
+ *
  * @author    Duncan Cameron
  * @copyright 2014-2016 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
  */
-
 class CampaignsPlugin extends phplistPlugin
 {
     const VERSION_FILE = 'version.txt';
@@ -23,11 +22,12 @@ class CampaignsPlugin extends phplistPlugin
     public $authors = 'Duncan Cameron';
     public $description = 'Campaign maintenance';
     public $topMenuLinks = array(
-        'main' => array('category' => 'campaigns')
+        'main' => array('category' => 'campaigns'),
     );
     public $documentationUrl = 'https://resources.phplist.com/plugin/campaigns';
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->coderoot = dirname(__FILE__) . '/CampaignsPlugin/';
         $this->version = (is_file($f = $this->coderoot . self::VERSION_FILE))
             ? file_get_contents($f)
@@ -36,18 +36,16 @@ class CampaignsPlugin extends phplistPlugin
     }
 
     /**
-     * Provide the dependencies for enabling this plugin
+     * Provide the dependencies for enabling this plugin.
      *
-     * @access  public
-     * @return  array
+     * @return array
      */
     public function dependencyCheck()
     {
         global $plugins;
 
         return array(
-            'Common plugin v3 installed' =>
-                phpListPlugin::isEnabled('CommonPlugin')
+            'Common plugin v3 installed' => phpListPlugin::isEnabled('CommonPlugin')
                     && preg_match('/\d+\.\d+\.\d+/', $plugins['CommonPlugin']->version, $matches)
                     && version_compare($matches[0], '3') > 0,
             'PHP version 5.3.0 or greater' => version_compare(PHP_VERSION, '5.3') > 0,
@@ -67,8 +65,9 @@ class CampaignsPlugin extends phplistPlugin
             'main' => $i18n->get('Manage campaigns'),
         );
     }
-    
-    public function adminmenu() {
+
+    public function adminmenu()
+    {
         return $this->pageTitles;
     }
 }

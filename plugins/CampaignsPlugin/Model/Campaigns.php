@@ -1,6 +1,6 @@
 <?php
 /**
- * CampaignsPlugin for phplist
+ * CampaignsPlugin for phplist.
  * 
  * This file is a part of CampaignsPlugin.
  *
@@ -14,15 +14,16 @@
  * GNU General Public License for more details.
  * 
  * @category  phplist
- * @package   CampaignsPlugin
+ *
  * @author    Duncan Cameron
- * @copyright 2014 Duncan Cameron
+ * @copyright 2014-2016 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
+ *
  * @link      http://forums.phplist.com/
  */
 
 /**
- * This class holds the properties entered in the form
+ * This class holds the properties entered in the form.
  */
 class CampaignsPlugin_Model_Campaigns extends CommonPlugin_Model
 {
@@ -41,7 +42,7 @@ class CampaignsPlugin_Model_Campaigns extends CommonPlugin_Model
         'redirect' => null,
     );
     protected $persist = array(
-        'type' => ''
+        'type' => '',
     );
     /*
      *    Public variables
@@ -50,14 +51,14 @@ class CampaignsPlugin_Model_Campaigns extends CommonPlugin_Model
     /*
      *    Private methods
      */
-    private function typeToStatus() {
-
+    private function typeToStatus()
+    {
         switch ($this->type) {
         case 'active':
             return array('inprocess', 'submitted', 'suspended');
             break;
         case 'sent':
-            return array('sent') ;
+            return array('sent');
             break;
         default:
             return array($this->type);
@@ -103,5 +104,4 @@ class CampaignsPlugin_Model_Campaigns extends CommonPlugin_Model
     {
         return $this->dao->deleteDraftMessages();
     }
-
 }

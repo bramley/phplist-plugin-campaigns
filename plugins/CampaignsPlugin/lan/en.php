@@ -16,7 +16,7 @@
  * @category  phplist
  * @package   CampaignsPlugin
  * @author    Duncan Cameron
- * @copyright 2014 Duncan Cameron
+ * @copyright 2014-2016 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
  * @link      http://forums.phplist.com/
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * CampaignsPlugin for phplist
+ * CampaignsPlugin for phplist.
  * 
  * This file is a part of CampaignsPlugin.
  *
@@ -14,10 +14,11 @@
  * GNU General Public License for more details.
  * 
  * @category  phplist
- * @package   CampaignsPlugin
+ *
  * @author    Duncan Cameron
- * @copyright 2014 Duncan Cameron
+ * @copyright 2014-2016 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
+ *
  * @link      http://forums.phplist.com/
  */
 
@@ -35,8 +36,9 @@ class CampaignsPlugin_DAO_Campaign extends CommonPlugin_DAO_Message
     {
         $conditions = array();
 
-        if ($owner)
+        if ($owner) {
             $conditions[] = "(m.owner = $owner)";
+        }
 
         if (count($statuses) > 0) {
             $values = implode(',', array_map(array($this, 'wrapQuotes'), $statuses));
@@ -59,11 +61,13 @@ class CampaignsPlugin_DAO_Campaign extends CommonPlugin_DAO_Message
         return $this->dbCommand->queryAll($sql);
     }
 
-    public function totalCampaigns($owner, array $statuses) {
+    public function totalCampaigns($owner, array $statuses)
+    {
         $conditions = array();
 
-        if ($owner)
+        if ($owner) {
             $conditions[] = "(owner = $owner)";
+        }
 
         if (count($statuses) > 0) {
             $values = implode(',', array_map(array($this, 'wrapQuotes'), $statuses));
@@ -79,4 +83,3 @@ class CampaignsPlugin_DAO_Campaign extends CommonPlugin_DAO_Message
         return $this->dbCommand->queryOne($sql, 't');
     }
 }
-

@@ -1,6 +1,6 @@
 <?php
 /**
- * CampaignsPlugin for phplist
+ * CampaignsPlugin for phplist.
  * 
  * This file is a part of CampaignsPlugin.
  *
@@ -14,15 +14,16 @@
  * GNU General Public License for more details.
  * 
  * @category  phplist
- * @package   CampaignsPlugin
+ *
  * @author    Duncan Cameron
- * @copyright 2014 Duncan Cameron
+ * @copyright 2014-2016 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
+ *
  * @link      http://forums.phplist.com/
  */
 
 /**
- * This is the controller class that implements the action() methods
+ * This is the controller class that implements the action() methods.
  */
 class CampaignsPlugin_Controller
     extends CommonPlugin_Controller
@@ -47,6 +48,7 @@ class CampaignsPlugin_Controller
         }
 
         $tabs->setCurrent($captions[$type]);
+
         return $tabs;
     }
 
@@ -99,7 +101,7 @@ class CampaignsPlugin_Controller
 
         $params = array(
             'model' => $model,
-            'action' => new CommonPlugin_PageURL(null, array('action' => 'resendFormSubmit'))
+            'action' => new CommonPlugin_PageURL(null, array('action' => 'resendFormSubmit')),
         );
 
         if (isset($_SESSION[self::PLUGIN])) {
@@ -110,7 +112,7 @@ class CampaignsPlugin_Controller
         print $this->render(
             dirname(__FILE__) . '/view/resend.tpl.php', array(
                 'toolbar' => $toolbar->display(),
-                'panel' => $panel->display()
+                'panel' => $panel->display(),
             )
         );
     }
@@ -120,7 +122,7 @@ class CampaignsPlugin_Controller
         $model = new CampaignsPlugin_Model_ResendForm($this->db);
         $model->reset();
         header('Location: ' . new CommonPlugin_PageURL(null, array(
-            'action' => 'resendForm', 'campaignID' => $this->model->campaignID
+            'action' => 'resendForm', 'campaignID' => $this->model->campaignID,
         )));
         exit;
     }
@@ -217,7 +219,7 @@ class CampaignsPlugin_Controller
             $w->addElement($key, new CommonPlugin_PageURL('message', array('id' => $row['id'])));
             $details = array(
                 sprintf('%s: %s', $this->i18n->get('From'), $row['fromfield']),
-                sprintf('%s: %s', $this->i18n->get('Entered'), $row['entered'])
+                sprintf('%s: %s', $this->i18n->get('Entered'), $row['entered']),
             );
 
             if ($type == 'sent') {
@@ -252,7 +254,7 @@ class CampaignsPlugin_Controller
             $this->i18n->get('delete_button'),
             true,
             $this->i18n->get('delete_prompt'),
-            array('action' => 'delete', 'redirect' => urlencode($_SERVER["REQUEST_URI"]))
+            array('action' => 'delete', 'redirect' => urlencode($_SERVER['REQUEST_URI']))
         );
 
         if ($type == 'draft') {
