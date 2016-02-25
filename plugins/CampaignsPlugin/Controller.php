@@ -285,7 +285,6 @@ class CampaignsPlugin_Controller
                 $details[] = sprintf('%s: %s', $this->i18n->get('Embargo'), formatDateTime($row['embargo']));
             }
             $w->addColumnHtml($key, $this->i18n->get('details'), implode('<br>', $details));
-            $w->addColumnHtml($key, $this->i18n->get('lists'), str_replace('|', '<br>', htmlspecialchars($row['lists'])), '');
 
             if ($type == 'active') {
                 $w->addColumn($key, $this->i18n->get('status'), $row['status'], '');
@@ -325,6 +324,7 @@ class CampaignsPlugin_Controller
             );
             $select = CHtml::checkBox(self::CHECKBOXNAME . '[]', false, array('value' => $row['id']));
             $w->addColumnHtml($key, $this->i18n->get('select'), $select);
+            $w->addRowHtml($key, $this->i18n->get('lists'), str_replace('|', '<br>', htmlspecialchars($row['lists'])), '');
         }
 
         $this->addButton(
