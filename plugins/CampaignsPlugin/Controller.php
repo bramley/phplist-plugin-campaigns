@@ -31,7 +31,11 @@ class CampaignsPlugin_Controller
 {
     const PLUGIN = 'CampaignsPlugin';
     const FORMNAME = 'MessagesForm';
-    const RADIONAME = 'campaignID';
+    const CHECKBOXNAME = 'campaignID';
+
+    private $db;
+    private $model;
+    private $dao;
 
     private function tabs($type)
     {
@@ -57,14 +61,43 @@ class CampaignsPlugin_Controller
         $w->addButton(
             $caption,
             htmlspecialchars(sprintf(
-                "javascript:formSubmit(%s, '%s', '%s', '%s', '%s', '%s')",
-                $select ? 'true' : 'false',
+                "javascript:formSubmit(%s, '%s', '%s', '%s', '%s', '%s', '%s')",
+                $select,
                 $prompt,
                 self::FORMNAME,
-                self::RADIONAME,
+                self::CHECKBOXNAME,
                 new CommonPlugin_PageURL(null, $query),
-                $this->i18n->get('campaign_select_error')
+                $this->i18n->get('none_selected_error'),
+                $this->i18n->get('only_one_allowed_error')
             ))
+        );
+    }
+
+    private function confirmDeleteButton($id)
+    {
+        return new confirmButton(
+            $this->i18n->get('delete_prompt'),
+            new CommonPlugin_PageURL(
+                null,
+                array('action' => 'deleteOne', 'campaignID' => $id, 'redirect' => $_SERVER['REQUEST_URI'])
+            ),
+            'Delete',
+            'delete campaign',
+            'button'
+        );
+    }
+
+    private function confirmCopyButton($id)
+    {
+        return new confirmButton(
+            $this->i18n->get('copy_prompt'),
+            new CommonPlugin_PageURL(
+                null,
+                array('action' => 'copy', 'campaignID' => $id)
+            ),
+            'Copy',
+            'copy campaign',
+            'button'
         );
     }
 
@@ -129,45 +162,65 @@ class CampaignsPlugin_Controller
 
     protected function actionRequeue()
     {
-        $r = $this->model->requeueMessage();
+        $r = $this->dao->requeueMessage($this->model->{self::CHECKBOXNAME});
         $_SESSION[self::PLUGIN]['actionResult'] = $r
-            ? $this->i18n->get('Campaign %d requeued', $this->model->{self::RADIONAME})
-            : $this->i18n->get('Unable to requeue campaign %d', $this->model->{self::RADIONAME});
+            ? $this->i18n->get('Campaign %d requeued', $this->model->{self::CHECKBOXNAME})
+            : $this->i18n->get('Unable to requeue campaign %d', $this->model->{self::CHECKBOXNAME});
         header('Location: ' . new CommonPlugin_PageURL(null, array('type' => 'active')));
         exit;
     }
 
     protected function actionCopy()
     {
-        $id = $this->model->copyMessage();
+        $id = $this->dao->copyMessage($this->model->{self::CHECKBOXNAME});
         $_SESSION[self::PLUGIN]['actionResult'] = $id
-            ? $this->i18n->get('Campaign %d copied to %d', $this->model->{self::RADIONAME}, $id)
-            : $this->i18n->get('Unable to copy campaign %d', $this->model->{self::RADIONAME});
+            ? $this->i18n->get('Campaign %d copied to %d', $this->model->{self::CHECKBOXNAME}, $id)
+            : $this->i18n->get('Unable to copy campaign %d', $this->model->{self::CHECKBOXNAME});
         header('Location: ' . new CommonPlugin_PageURL(null, array('type' => 'draft')));
         exit;
     }
 
     protected function actionDelete()
     {
-        $r = $this->model->deleteMessage();
+        $deleted = array();
+        $failed = array();
+
+        foreach ($this->model->{self::CHECKBOXNAME} as $id) {
+            if ($this->dao->deleteMessage($id)) {
+                $deleted[] = $id;
+            } else {
+                $failed[] = $id;
+            }
+        }
+        $_SESSION[self::PLUGIN]['actionResult'] = '';
+
+        if ($deleted) {
+            $_SESSION[self::PLUGIN]['actionResult'] .= $this->i18n->get('Campaigns %s deleted', implode(', ', $deleted));
+        }
+
+        if ($failed) {
+            $_SESSION[self::PLUGIN]['actionResult'] .= $this->i18n->get('Unable to delete %s ', implode(', ', $failed));
+        }
+        header('Location: ' . $this->model->redirect);
+        exit;
+    }
+
+    protected function actionDeleteOne()
+    {
+        $campaignId = $this->model->{self::CHECKBOXNAME};
+        $r = $this->dao->deleteMessage($campaignId);
         $_SESSION[self::PLUGIN]['actionResult'] = $r
-            ? $this->i18n->get('Campaign %d deleted', $this->model->{self::RADIONAME})
-            : $this->i18n->get('Unable to delete %d ', $this->model->{self::RADIONAME});
+            ? $this->i18n->get('Campaign %s deleted', $campaignId)
+            : $this->i18n->get('Unable to delete %s ', $campaignId);
         header('Location: ' . $this->model->redirect);
         exit;
     }
 
     protected function actionDeleteDrafts()
     {
-        $r = $this->model->deleteDraftMessages();
-        $_SESSION[self::PLUGIN]['actionResult'] = $this->i18n->get('%d campaigns deleted', $r);
+        $r = $this->dao->deleteDraftMessages();
+        $_SESSION[self::PLUGIN]['actionResult'] = $this->i18n->get('%d draft campaigns deleted', $r);
         header('Location: ' . new CommonPlugin_PageURL(null, array('type' => 'draft')));
-        exit;
-    }
-
-    protected function actionEdit()
-    {
-        header('Location: ' . new CommonPlugin_PageURL('send', array('id' => $this->model->campaignID)));
         exit;
     }
 
@@ -197,6 +250,7 @@ class CampaignsPlugin_Controller
         $this->db = new CommonPlugin_DB();
         $this->model = new CampaignsPlugin_Model_Campaigns($this->db);
         $this->model->setProperties($_REQUEST);
+        $this->dao = new CampaignsPlugin_DAO_Campaign($this->db);
     }
     /*
      * Implementation of CommonPlugin_IPopulator
@@ -229,30 +283,51 @@ class CampaignsPlugin_Controller
             }
             $w->addColumnHtml($key, $this->i18n->get('details'), implode('<br>', $details));
             $w->addColumnHtml($key, $this->i18n->get('lists'), str_replace('|', '<br>', htmlspecialchars($row['lists'])), '');
-            $w->addColumn($key, $this->i18n->get('status'), $row['status'], '');
-            $select = CHtml::radioButton(self::RADIONAME, false, array('value' => $row['id']));
+
+            if ($type == 'active') {
+                $w->addColumn($key, $this->i18n->get('status'), $row['status'], '');
+            }
+            $deleteButton = $this->confirmDeleteButton($row['id']);
+            $copyButton = $this->confirmCopyButton($row['id']);
+            $editLink = new CommonPlugin_PageLink(
+                new CommonPlugin_PageURL('send', array('id' => $row['id'])),
+                'Edit',
+                array('class' => 'button', 'title' => 'edit campaign')
+            );
+
+            if ($type == 'sent') {
+                $resendLink = new CommonPlugin_PageLink(
+                    new CommonPlugin_PageURL(null, array('action' => 'resend', 'campaignID' => $row['id'])),
+                    'Resend',
+                    array('class' => 'button', 'title' => 'resend campaign')
+                );
+                $requeueLink = new CommonPlugin_PageLink(
+                    new CommonPlugin_PageURL(null, array('action' => 'requeue', 'campaignID' => $row['id'])),
+                    'Requeue',
+                    array('class' => 'button', 'title' => 'requeue campaign')
+                );
+            } else {
+                $resendLink = '';
+                $requeueLink = '';
+            }
+
+            $w->addColumnHtml(
+                $key,
+                $this->i18n->get('action'),
+                '<span class="edit">' . $editLink . '</span>'
+                . '<span class="copy">' . $copyButton->show() . '</span>'
+                . '<span class="re-send">' . $resendLink . '</span>'
+                . '<span class="resend">' . $requeueLink . '</span>'
+                . '<span class="delete">' . $deleteButton->show() . '</span>'
+            );
+            $select = CHtml::checkBox(self::CHECKBOXNAME . '[]', false, array('value' => $row['id']));
             $w->addColumnHtml($key, $this->i18n->get('select'), $select);
         }
-
-        if ($type == 'sent') {
-            $this->addButton($w, $this->i18n->get('resend_button'), true, '', array('action' => 'resend'));
-        }
-
-        if ($type == 'sent' || $type == 'active') {
-            $this->addButton(
-                $w,
-                $this->i18n->get('requeue_button'),
-                true,
-                $this->i18n->get('requeue_prompt'),
-                array('action' => 'requeue')
-            );
-        }
-        $this->addButton($w, $this->i18n->get('copy_button'), true, $this->i18n->get('copy_prompt'), array('action' => 'copy'));
 
         $this->addButton(
             $w,
             $this->i18n->get('delete_button'),
-            true,
+            2,
             $this->i18n->get('delete_prompt'),
             array('action' => 'delete', 'redirect' => urlencode($_SERVER['REQUEST_URI']))
         );
@@ -261,13 +336,11 @@ class CampaignsPlugin_Controller
             $this->addButton(
                 $w,
                 $this->i18n->get('delete_drafts_button'),
-                false,
+                0,
                 $this->i18n->get('delete_draft_prompt'),
                 array('action' => 'deleteDrafts')
             );
         }
-
-        $this->addButton($w, $this->i18n->get('edit_button'), true, '', array('action' => 'edit'));
     }
 
     public function total()

@@ -84,24 +84,4 @@ class CampaignsPlugin_Model_Campaigns extends CommonPlugin_Model
     {
         return $this->dao->totalCampaigns($this->owner, $this->typeToStatus());
     }
-
-    public function copyMessage()
-    {
-        return $this->dao->copyMessage($this->campaignID);
-    }
-
-    public function requeueMessage()
-    {
-        return $this->dao->requeueMessage($this->campaignID);
-    }
-
-    public function deleteMessage()
-    {
-        return $this->dao->deleteMessage($this->campaignID);
-    }
-
-    public function deleteDraftMessages()
-    {
-        return $this->dao->deleteDraftMessages();
-    }
 }

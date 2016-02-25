@@ -33,10 +33,13 @@
  * - $formName: name for the form
  * - $listing: HTML result of listing display
  */
-?>
+global $pagefooter;
+
+$pagefooter[basename(__FILE__)] = <<<'END'
+
 <script language="javascript" type="text/javascript">
 
- function formSubmit(select, prompt, name, radio, url, errortext) {
+function formSubmit(select, prompt, name, radio, url, noneselectederror, onlyoneallowederror) {
 /**
  * select - whether a radio button must be selected
  * prompt - confirmation prompt, empty if not required
@@ -50,16 +53,18 @@
     if (!radios.length) {
         radios = [radios];
     }
-    var found = false;
+    var found = 0;
 
     for (i = 0; i < radios.length; i++){
         if (radios[i].checked == true) {
-            found = true;
+            ++found;
         }
     }
 
-    if (select && !found) {
-        alert(errortext);
+    if (select != 0 && found == 0) {
+        alert(noneselectederror);
+    } else if (select == 1 && found > 1) {
+        alert(onlyoneallowederror);
     } else {
         if (prompt == '' || confirm(prompt)) {
             form.action = url;
@@ -68,6 +73,27 @@
     }
 }
 </script>
+END;
+?>
+<style>
+span.copy a.button {
+    background:url("/lists/admin/ui/dressprow/images/16x16/plus.png") no-repeat scroll 50% 50%;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-indent: -9999px;
+}
+span.re-send a.button {
+    background:url("/lists/admin/ui/dressprow/images/16x16/customers.png") no-repeat scroll 50% 50%;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-indent: -9999px;
+}
+
+</style>
 <div id="top">
     <hr/>
 <?php echo $toolbar; ?>
