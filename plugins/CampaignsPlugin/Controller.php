@@ -269,17 +269,20 @@ class CampaignsPlugin_Controller
         $type = $this->model->type;
 
         foreach ($rows as $row) {
-            $key = "$row[id] | $row[subject]";
+            $message = loadMessageData($row['id']);
+            $key = ($message['subject'] == $message['campaigntitle'])
+                ? "$row[id] | $message[subject]"
+                : "$row[id] | $message[campaigntitle]<br><b>$message[subject]</b>";
             $w->addElement($key, new CommonPlugin_PageURL('message', array('id' => $row['id'])));
             $details = array(
                 sprintf('%s: %s', $this->i18n->get('From'), $row['fromfield']),
-                sprintf('%s: %s', $this->i18n->get('Entered'), $row['entered']),
+                sprintf('%s: %s', $this->i18n->get('Entered'), formatDateTime($row['entered'])),
             );
 
             if ($type == 'sent') {
-                $details[] = sprintf('%s: %s', $this->i18n->get('Sent'), $row['sent']);
+                $details[] = sprintf('%s: %s', $this->i18n->get('Sent'), formatDateTime($row['sent']));
             } else {
-                $details[] = sprintf('%s: %s', $this->i18n->get('Embargo'), $row['embargo']);
+                $details[] = sprintf('%s: %s', $this->i18n->get('Embargo'), formatDateTime($row['embargo']));
             }
             $w->addColumnHtml($key, $this->i18n->get('details'), implode('<br>', $details));
             $w->addColumnHtml($key, $this->i18n->get('lists'), str_replace('|', '<br>', htmlspecialchars($row['lists'])), '');
