@@ -50,6 +50,7 @@ This should contain
 ## Version history ##
 
     version     Description
+    2.2.1+20160226  Correct the location of button images
     2.2.0+20160226  Allow multiple delete, use buttons for actions that apply to only one campaign
     2.1.0+20160217  Return to original page after deleting a campaign
     2.0.0+20150815  Added dependencies

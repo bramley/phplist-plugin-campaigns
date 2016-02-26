@@ -34,6 +34,7 @@
  * - $listing: HTML result of listing display
  */
 global $pagefooter;
+global $pageroot;
 
 $pagefooter[basename(__FILE__)] = <<<'END'
 
@@ -77,7 +78,7 @@ END;
 ?>
 <style>
 span.copy a.button {
-    background:url("/lists/admin/ui/dressprow/images/16x16/plus.png") no-repeat scroll 50% 50%;
+    background:url("<?php echo $pageroot; ?>/admin/ui/dressprow/images/16x16/plus.png") no-repeat scroll 50% 50%;
     width: 16px;
     height: 16px;
     vertical-align: middle;
@@ -85,7 +86,7 @@ span.copy a.button {
     text-indent: -9999px;
 }
 span.re-send a.button {
-    background:url("/lists/admin/ui/dressprow/images/16x16/customers.png") no-repeat scroll 50% 50%;
+    background:url("<?php echo $pageroot; ?>/admin/ui/dressprow/images/16x16/customers.png") no-repeat scroll 50% 50%;
     width: 16px;
     height: 16px;
     vertical-align: middle;
