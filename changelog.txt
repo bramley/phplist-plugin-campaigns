@@ -1,3 +1,11 @@
+version 2.2.0+20160226
+      Use action buttons for actions that apply to only one campaign
+      Use check boxes instead of radio buttons to allow multiple delete
+      Display title when different to the subject
+      Format dates as core phplist
+      Display lists as separate row
+      Restructure into two controller classes and separate populator class
+
 version 2.1.0+20160217
       Return to original page after deleting a campaign
       Re-order tabs to match core phplist

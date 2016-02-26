@@ -1,7 +1,7 @@
 <?php
 /**
  * CampaignsPlugin for phplist.
- * 
+ *
  * This file is a part of CampaignsPlugin.
  *
  * This plugin is free software: you can redistribute it and/or modify
@@ -12,23 +12,31 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
- * @category  phplist
  *
  * @author    Duncan Cameron
  * @copyright 2014-2016 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
  *
- * @link      http://forums.phplist.com/
+ * @link      https://discuss.phplist.org/
  */
 
 /**
- * This is the entry code invoked by phplist.
+ * This class is a concrete implementation of CommonPlugin_ControllerFactoryBase.
  */
-if (!(phplistPlugin::isEnabled('CommonPlugin'))) {
-    echo 'phplist-plugin-common must be installed and enabled to use this plugin';
+class CampaignsPlugin_ControllerFactory extends CommonPlugin_ControllerFactoryBase
+{
+    /**
+     * Custom implementation to create a controller using plugin and page.
+     *
+     * @param string $pi     the plugin
+     * @param array  $params further parameters from the URL
+     *
+     * @return CommonPlugin_Controller
+     */
+    public function createController($pi, array $params)
+    {
+        $class = $pi . '_Controller_' . ucfirst($params['page']);
 
-    return;
+        return new $class();
+    }
 }
-
-CommonPlugin_Main::run();

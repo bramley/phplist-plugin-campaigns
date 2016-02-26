@@ -22,7 +22,7 @@ class CampaignsPlugin extends phplistPlugin
     public $authors = 'Duncan Cameron';
     public $description = 'Campaign maintenance';
     public $topMenuLinks = array(
-        'main' => array('category' => 'campaigns'),
+        'campaigns' => array('category' => 'campaigns'),
     );
     public $documentationUrl = 'https://resources.phplist.com/plugin/campaigns';
 
@@ -62,7 +62,7 @@ class CampaignsPlugin extends phplistPlugin
         require_once $plugins['CommonPlugin']->coderoot . 'Autoloader.php';
         $i18n = new CommonPlugin_I18N($this);
         $this->pageTitles = array(
-            'main' => $i18n->get('Manage campaigns'),
+            'campaigns' => $i18n->get('Manage campaigns'),
         );
     }
 

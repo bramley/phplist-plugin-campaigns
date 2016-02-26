@@ -23,10 +23,9 @@
  */
 
 /**
- * This is the controller class that implements the action() methods.
+ * This class populates the listing of campaigns.
  */
-class CampaignsPlugin_Controller
-    extends CommonPlugin_Controller
+class CampaignsPlugin_CampaignsPopulator
     implements CommonPlugin_IPopulator
 {
     const PLUGIN = 'CampaignsPlugin';
@@ -36,25 +35,6 @@ class CampaignsPlugin_Controller
     private $db;
     private $model;
     private $dao;
-
-    private function tabs($type)
-    {
-        $captions = array(
-            'sent' => $this->i18n->get('tab_sent'),
-            'active' => $this->i18n->get('tab_active'),
-            'draft' => $this->i18n->get('tab_draft'),
-        );
-
-        $tabs = new CommonPlugin_Tabs();
-
-        foreach ($captions as $key => $value) {
-            $tabs->addTab($value, new CommonPlugin_PageURL(null, array('type' => $key)));
-        }
-
-        $tabs->setCurrent($captions[$type]);
-
-        return $tabs;
-    }
 
     private function addButton(WebblerListing $w, $caption, $select, $prompt, array $query)
     {
@@ -101,156 +81,10 @@ class CampaignsPlugin_Controller
         );
     }
 
-    protected function actionResendFormSubmit()
+    public function __construct($model, $i18n)
     {
-        $model = new CampaignsPlugin_Model_ResendForm($this->db);
-
-        $this->normalise($_POST);
-        $model->setProperties($_POST);
-        $session = array();
-
-        if ($model->emails) {
-            $session['resendResults'] = $model->resend();
-
-            if (count($session['resendResults']['deleted']) == 0) {
-                $session['errorMessage'] = $this->i18n->get('campaign was not resent to any email addresses');
-            }
-        } else {
-            $session['errorMessage'] = $this->i18n->get('email addresses must be entered');
-        }
-        $_SESSION[self::PLUGIN] = $session;
-        header('Location: ' . new CommonPlugin_PageURL(null, array('action' => 'resendForm')));
-        exit;
-    }
-
-    protected function actionResendForm()
-    {
-        $model = new CampaignsPlugin_Model_ResendForm($this->db);
-        $model->setProperties($_GET);
-        $count = $model->loadBouncedEmails();
-
-        $toolbar = new CommonPlugin_Toolbar($this);
-        $toolbar->addHelpButton('resend');
-
-        $params = array(
-            'model' => $model,
-            'action' => new CommonPlugin_PageURL(null, array('action' => 'resendFormSubmit')),
-        );
-
-        if (isset($_SESSION[self::PLUGIN])) {
-            $params += $_SESSION[self::PLUGIN];
-            unset($_SESSION[self::PLUGIN]);
-        }
-        $panel = new UIPanel($this->i18n->get('Resend campaign'), $this->render(dirname(__FILE__) . '/view/resend_panel.tpl.php', $params));
-        print $this->render(
-            dirname(__FILE__) . '/view/resend.tpl.php', array(
-                'toolbar' => $toolbar->display(),
-                'panel' => $panel->display(),
-            )
-        );
-    }
-
-    protected function actionResend()
-    {
-        $model = new CampaignsPlugin_Model_ResendForm($this->db);
-        $model->reset();
-        header('Location: ' . new CommonPlugin_PageURL(null, array(
-            'action' => 'resendForm', 'campaignID' => $this->model->campaignID,
-        )));
-        exit;
-    }
-
-    protected function actionRequeue()
-    {
-        $r = $this->dao->requeueMessage($this->model->{self::CHECKBOXNAME});
-        $_SESSION[self::PLUGIN]['actionResult'] = $r
-            ? $this->i18n->get('Campaign %d requeued', $this->model->{self::CHECKBOXNAME})
-            : $this->i18n->get('Unable to requeue campaign %d', $this->model->{self::CHECKBOXNAME});
-        header('Location: ' . new CommonPlugin_PageURL(null, array('type' => 'active')));
-        exit;
-    }
-
-    protected function actionCopy()
-    {
-        $id = $this->dao->copyMessage($this->model->{self::CHECKBOXNAME});
-        $_SESSION[self::PLUGIN]['actionResult'] = $id
-            ? $this->i18n->get('Campaign %d copied to %d', $this->model->{self::CHECKBOXNAME}, $id)
-            : $this->i18n->get('Unable to copy campaign %d', $this->model->{self::CHECKBOXNAME});
-        header('Location: ' . new CommonPlugin_PageURL(null, array('type' => 'draft')));
-        exit;
-    }
-
-    protected function actionDelete()
-    {
-        $deleted = array();
-        $failed = array();
-
-        foreach ($this->model->{self::CHECKBOXNAME} as $id) {
-            if ($this->dao->deleteMessage($id)) {
-                $deleted[] = $id;
-            } else {
-                $failed[] = $id;
-            }
-        }
-        $_SESSION[self::PLUGIN]['actionResult'] = '';
-
-        if ($deleted) {
-            $_SESSION[self::PLUGIN]['actionResult'] .= $this->i18n->get('Campaigns %s deleted', implode(', ', $deleted));
-        }
-
-        if ($failed) {
-            $_SESSION[self::PLUGIN]['actionResult'] .= $this->i18n->get('Unable to delete %s ', implode(', ', $failed));
-        }
-        header('Location: ' . $this->model->redirect);
-        exit;
-    }
-
-    protected function actionDeleteOne()
-    {
-        $campaignId = $this->model->{self::CHECKBOXNAME};
-        $r = $this->dao->deleteMessage($campaignId);
-        $_SESSION[self::PLUGIN]['actionResult'] = $r
-            ? $this->i18n->get('Campaign %s deleted', $campaignId)
-            : $this->i18n->get('Unable to delete %s ', $campaignId);
-        header('Location: ' . $this->model->redirect);
-        exit;
-    }
-
-    protected function actionDeleteDrafts()
-    {
-        $r = $this->dao->deleteDraftMessages();
-        $_SESSION[self::PLUGIN]['actionResult'] = $this->i18n->get('%d draft campaigns deleted', $r);
-        header('Location: ' . new CommonPlugin_PageURL(null, array('type' => 'draft')));
-        exit;
-    }
-
-    protected function actionDefault()
-    {
-        $toolbar = new CommonPlugin_Toolbar($this);
-        $toolbar->addHelpButton('campaigns');
-        $listing = new CommonPlugin_Listing($this, $this);
-        $listing->pager->setItemsPerPage(array(5, 25), 5);
-        $params = array(
-            'toolbar' => $toolbar->display(),
-            'tabs' => $this->tabs($this->model->type)->display(),
-            'formName' => self::FORMNAME,
-            'listing' => $listing->display(),
-        );
-
-        if (isset($_SESSION[self::PLUGIN])) {
-            $params += $_SESSION[self::PLUGIN];
-            unset($_SESSION[self::PLUGIN]);
-        }
-        print $this->render(dirname(__FILE__) . '/view/campaigns.tpl.php', $params);
-    }
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->db = new CommonPlugin_DB();
-        $this->model = new CampaignsPlugin_Model_Campaigns($this->db);
-        $this->model->setProperties($_REQUEST);
-        $this->dao = new CampaignsPlugin_DAO_Campaign($this->db);
+        $this->model = $model;
+        $this->i18n = $i18n;
     }
     /*
      * Implementation of CommonPlugin_IPopulator
@@ -299,7 +133,7 @@ class CampaignsPlugin_Controller
 
             if ($type == 'sent') {
                 $resendLink = new CommonPlugin_PageLink(
-                    new CommonPlugin_PageURL(null, array('action' => 'resend', 'campaignID' => $row['id'])),
+                    new CommonPlugin_PageURL('resend', array('pi' => self::PLUGIN, 'action' => 'resendForm', 'campaignID' => $row['id'])),
                     'Resend',
                     array('class' => 'button', 'title' => 'resend campaign')
                 );
