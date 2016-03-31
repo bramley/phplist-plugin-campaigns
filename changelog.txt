@@ -1,3 +1,6 @@
+version 2.2.2+20160331
+      Update dependencies
+
 version 2.2.1+20160226
       Correct the location of button images
 

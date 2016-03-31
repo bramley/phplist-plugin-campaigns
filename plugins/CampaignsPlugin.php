@@ -29,10 +29,10 @@ class CampaignsPlugin extends phplistPlugin
     public function __construct()
     {
         $this->coderoot = dirname(__FILE__) . '/CampaignsPlugin/';
+        parent::__construct();
         $this->version = (is_file($f = $this->coderoot . self::VERSION_FILE))
             ? file_get_contents($f)
             : '';
-        parent::__construct();
     }
 
     /**
@@ -49,6 +49,7 @@ class CampaignsPlugin extends phplistPlugin
                     && preg_match('/\d+\.\d+\.\d+/', $plugins['CommonPlugin']->version, $matches)
                     && version_compare($matches[0], '3') > 0,
             'PHP version 5.3.0 or greater' => version_compare(PHP_VERSION, '5.3') > 0,
+            'phpList version 3.2.2 or later' => version_compare(VERSION, '3.2.2') >= 0,
         );
     }
 

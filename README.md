@@ -20,9 +20,9 @@ The plugin adds an item to the Campaigns menu to display a page of campaigns org
 
 ### Dependencies ###
 
-Requires php version 5.3 or later.
+This plugin requires phplist release 3.2.2 or later, and requires php version 5.3 or later.
 
-Requires the Common Plugin version 3 to be installed. You should install or upgrade to the latest version.
+You also need to install the Common Plugin version 3, and should install or upgrade to the latest version.
 See <https://github.com/bramley/phplist-plugin-common>
 
 ### Set the plugin directory ###
@@ -50,6 +50,7 @@ This should contain
 ## Version history ##
 
     version     Description
+    2.2.2+20160331  Updated dependencies
     2.2.1+20160226  Correct the location of button images
     2.2.0+20160226  Allow multiple delete, use buttons for actions that apply to only one campaign
     2.1.0+20160217  Return to original page after deleting a campaign
