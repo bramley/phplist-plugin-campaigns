@@ -1,7 +1,7 @@
 <?php
 /**
  * CampaignsPlugin for phplist.
- * 
+ *
  * This file is a part of CampaignsPlugin.
  *
  * This plugin is free software: you can redistribute it and/or modify
@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * @category  phplist
  *
  * @author    Duncan Cameron
@@ -25,8 +25,7 @@
 /**
  * This class populates the listing of campaigns.
  */
-class CampaignsPlugin_CampaignsPopulator
-    implements CommonPlugin_IPopulator
+class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
 {
     const PLUGIN = 'CampaignsPlugin';
     const FORMNAME = 'MessagesForm';
@@ -86,6 +85,7 @@ class CampaignsPlugin_CampaignsPopulator
         $this->model = $model;
         $this->i18n = $i18n;
     }
+
     /*
      * Implementation of CommonPlugin_IPopulator
      */

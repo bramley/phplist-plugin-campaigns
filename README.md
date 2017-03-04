@@ -50,6 +50,7 @@ This should contain
 ## Version history ##
 
     version     Description
+    2.2.3+20170304  Use core phplist help dialog
     2.2.2+20160331  Updated dependencies
     2.2.1+20160226  Correct the location of button images
     2.2.0+20160226  Allow multiple delete, use buttons for actions that apply to only one campaign

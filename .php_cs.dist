@@ -1,0 +1,19 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__)
+    ->exclude('plugins/CampaignsPlugin/view')
+    ->exclude('plugins/CampaignsPlugin/help')
+    ->exclude('plugins/CampaignsPlugin/lan')
+;
+
+return PhpCsFixer\Config::create()
+    ->setRules(array(
+        '@PSR1' => true,
+        '@PSR2' => true,
+        '@Symfony' => true,
+        'concat_space' => false,
+        'phpdoc_no_alias_tag' => false,
+    ))
+    ->setFinder($finder)
+;

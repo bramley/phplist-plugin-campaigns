@@ -1,3 +1,7 @@
+version 2.2.3+20170304
+      New page to handle core phplist help dialog
+      Coding standards changes
+
 version 2.2.2+20160331
       Update dependencies
 

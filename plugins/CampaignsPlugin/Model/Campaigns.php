@@ -1,7 +1,7 @@
 <?php
 /**
  * CampaignsPlugin for phplist.
- * 
+ *
  * This file is a part of CampaignsPlugin.
  *
  * This plugin is free software: you can redistribute it and/or modify
@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * @category  phplist
  *
  * @author    Duncan Cameron
@@ -64,6 +64,7 @@ class CampaignsPlugin_Model_Campaigns extends CommonPlugin_Model
             return array($this->type);
         }
     }
+
     /*
      *    Public methods
      */

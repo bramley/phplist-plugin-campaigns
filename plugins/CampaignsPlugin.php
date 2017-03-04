@@ -1,7 +1,7 @@
 <?php
 /**
  * CampaignsPlugin for phplist.
- * 
+ *
  * This file is a part of CampaignsPlugin.
  *
  * @category  phplist
