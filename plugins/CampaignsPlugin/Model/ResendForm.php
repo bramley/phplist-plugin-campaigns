@@ -32,8 +32,6 @@ class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
     /*
      *    Private variables
      */
-    private $dao;
-    private $userDao;
     private $defaults = array(
         'campaignID' => null,
         'emails' => null,
@@ -42,7 +40,6 @@ class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
         'requeue' => 1,
     );
 
-    public $subject;
     /*
      *    Inherited protected variables
      */
@@ -58,95 +55,14 @@ class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
     /*
      *    Public methods
      */
-    public function __construct($db)
+    public function __construct()
     {
-        $this->dao = new CampaignsPlugin_DAO_Resend($db);
-        $this->userDao = new CommonPlugin_DAO_User($db);
         $this->properties = $this->defaults;
         parent::__construct('CampaignsPlugin');
-    }
-
-    public function setProperties(array $properties)
-    {
-        parent::setProperties($properties);
-
-        if ($this->campaignID) {
-            $row = $this->dao->messageById($this->campaignID);
-            $this->subject = $row['subject'];
-        }
-    }
-
-    public function loadBouncedEmails()
-    {
-        $emails = $this->dao->bouncedEmails($this->campaignID);
-//        $this->setProperties(array('emails' => implode("\n", $emails)));
-        $this->emails = '';
-
-        return 0;
-
-        return count($emails);
     }
 
     public function reset()
     {
         parent::setProperties($this->defaults);
-    }
-
-    public function resend()
-    {
-        $campaignID = $this->campaignID;
-        $notsent = array();
-        $deleted = array();
-        $bounced = array();
-        $ignored = array();
-        $invalid = array();
-        $requeued = false;
-
-        $emails = preg_split('/\s+/', $this->emails, null, PREG_SPLIT_NO_EMPTY);
-
-        foreach ($emails as $email) {
-            if (!(filter_var($email, FILTER_VALIDATE_EMAIL))) {
-                $invalid[] = $email;
-                continue;
-            }
-
-            if (!($row = $this->userDao->userByEmail($email))) {
-                $ignored[] = $email;
-                continue;
-            }
-            $userID = $row['id'];
-            $count = $this->dao->deleteSent($campaignID, $userID);
-
-            if ($count > 0) {
-                $deleted[] = $email;
-
-                if ($this->bounce) {
-                    if ($this->dao->deleteBounces($campaignID, $userID) > 0) {
-                        $bounced[] = $email;
-                    }
-                }
-
-                if ($this->totals) {
-                    $this->dao->adjustTotals($campaignID);
-                }
-            } else {
-                $notsent[] = $email;
-            }
-        }
-
-        if ($this->requeue && count($deleted) > 0) {
-            $this->dao->requeueMessage($campaignID);
-            $requeued = true;
-        }
-
-        return array(
-                'campaignID' => $campaignID,
-                'deleted' => $deleted,
-                'bounced' => $bounced,
-                'ignored' => $ignored,
-                'notsent' => $notsent,
-                'requeued' => $requeued,
-                'invalid' => $invalid,
-        );
     }
 }

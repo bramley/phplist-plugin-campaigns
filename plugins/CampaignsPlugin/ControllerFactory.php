@@ -35,8 +35,10 @@ class CampaignsPlugin_ControllerFactory extends CommonPlugin_ControllerFactoryBa
      */
     public function createController($pi, array $params)
     {
+        $container = include __DIR__ . '/dic.php';
+
         $class = $pi . '_Controller_' . ucfirst($params['page']);
 
-        return new $class();
+        return $container->get($class);
     }
 }

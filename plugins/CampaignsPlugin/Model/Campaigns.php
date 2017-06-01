@@ -28,12 +28,6 @@
 class CampaignsPlugin_Model_Campaigns extends CommonPlugin_Model
 {
     /*
-     *    Private variables
-     */
-    private $dao;
-    private $owner;
-
-    /*
      *    Inherited protected variables
      */
     protected $properties = array(
@@ -44,45 +38,9 @@ class CampaignsPlugin_Model_Campaigns extends CommonPlugin_Model
     protected $persist = array(
         'type' => '',
     );
-    /*
-     *    Public variables
-     */
 
-    /*
-     *    Private methods
-     */
-    private function typeToStatus()
+    public function __construct()
     {
-        switch ($this->type) {
-        case 'active':
-            return array('inprocess', 'submitted', 'suspended');
-            break;
-        case 'sent':
-            return array('sent');
-            break;
-        default:
-            return array($this->type);
-        }
-    }
-
-    /*
-     *    Public methods
-     */
-    public function __construct($db)
-    {
-        $this->dao = new CampaignsPlugin_DAO_Campaign($db);
         parent::__construct('CampaignsPlugin');
-        $access = accessLevel('messages');
-        $this->owner = ($access == 'owner') ? $_SESSION['logindetails']['id'] : null;
-    }
-
-    public function campaigns($start, $limit)
-    {
-        return $this->dao->campaigns($this->owner, $this->typeToStatus(), $start, $limit);
-    }
-
-    public function totalCampaigns()
-    {
-        return $this->dao->totalCampaigns($this->owner, $this->typeToStatus());
     }
 }

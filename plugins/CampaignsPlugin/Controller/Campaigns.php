@@ -31,7 +31,6 @@ class CampaignsPlugin_Controller_Campaigns extends CommonPlugin_Controller
     const FORMNAME = 'MessagesForm';
     const CHECKBOXNAME = 'campaignID';
 
-    private $db;
     private $model;
     private $dao;
 
@@ -120,9 +119,11 @@ class CampaignsPlugin_Controller_Campaigns extends CommonPlugin_Controller
     {
         $toolbar = new CommonPlugin_Toolbar($this);
         $toolbar->addHelpButton('campaigns');
+        $access = accessLevel('messages');
+        $owner = ($access == 'owner') ? $_SESSION['logindetails']['id'] : null;
         $listing = new CommonPlugin_Listing(
             $this,
-            new CampaignsPlugin_CampaignsPopulator($this->model, $this->i18n)
+            new CampaignsPlugin_CampaignsPopulator($owner, $this->model->type, $this->dao, $this->i18n)
         );
         $listing->pager->setItemsPerPage(array(5, 25), 5);
         $params = array(
@@ -139,12 +140,11 @@ class CampaignsPlugin_Controller_Campaigns extends CommonPlugin_Controller
         echo $this->render(dirname(__FILE__) . '/../view/campaigns.tpl.php', $params);
     }
 
-    public function __construct()
+    public function __construct(CampaignsPlugin_Model_Campaigns $model, CampaignsPlugin_DAO_Campaign $dao)
     {
         parent::__construct();
-        $this->db = new CommonPlugin_DB();
-        $this->model = new CampaignsPlugin_Model_Campaigns($this->db);
+        $this->model = $model;
         $this->model->setProperties($_REQUEST);
-        $this->dao = new CampaignsPlugin_DAO_Campaign($this->db);
+        $this->dao = $dao;
     }
 }

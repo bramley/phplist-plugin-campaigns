@@ -1,3 +1,8 @@
+version 2.3.0+20170601
+      Inject dependencies into controller classes.
+      Controller classes use dao directly.
+      Update versions of PHP and Common Plugin that are required.
+
 version 2.2.3+20170304
       New page to handle core phplist help dialog
       Coding standards changes

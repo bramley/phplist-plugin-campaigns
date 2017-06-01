@@ -28,8 +28,23 @@ class CampaignsPlugin_DAO_Campaign extends CommonPlugin_DAO_Message
         return "'$v'";
     }
 
-    public function campaigns($owner, array $statuses, $start, $limit)
+    private function typeToStatus($type)
     {
+        switch ($type) {
+            case 'active':
+                return array('inprocess', 'submitted', 'suspended');
+                break;
+            case 'sent':
+                return array('sent');
+                break;
+            default:
+                return array($type);
+        }
+    }
+
+    public function campaigns($owner, $type, $start, $limit)
+    {
+        $statuses = $this->typeToStatus($type);
         $conditions = array();
 
         if ($owner) {
@@ -57,8 +72,9 @@ class CampaignsPlugin_DAO_Campaign extends CommonPlugin_DAO_Message
         return $this->dbCommand->queryAll($sql);
     }
 
-    public function totalCampaigns($owner, array $statuses)
+    public function totalCampaigns($owner, $type)
     {
+        $statuses = $this->typeToStatus($type);
         $conditions = array();
 
         if ($owner) {
@@ -76,6 +92,6 @@ class CampaignsPlugin_DAO_Campaign extends CommonPlugin_DAO_Message
             FROM {$this->tables['message']} m
             $where";
 
-        return $this->dbCommand->queryOne($sql, 't');
+        return $this->dbCommand->queryOne($sql);
     }
 }

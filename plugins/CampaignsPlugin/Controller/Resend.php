@@ -29,18 +29,76 @@ class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
 {
     const PLUGIN = 'CampaignsPlugin';
 
-    private $db;
+    private $dao;
+    private $model;
+    private $userDao;
+
+    private function resend()
+    {
+        $campaignID = $this->model->campaignID;
+        $notsent = array();
+        $deleted = array();
+        $bounced = array();
+        $ignored = array();
+        $invalid = array();
+        $requeued = false;
+
+        $emails = preg_split('/\s+/', $this->model->emails, null, PREG_SPLIT_NO_EMPTY);
+
+        foreach ($emails as $email) {
+            if (!(filter_var($email, FILTER_VALIDATE_EMAIL))) {
+                $invalid[] = $email;
+                continue;
+            }
+
+            if (!($row = $this->userDao->userByEmail($email))) {
+                $ignored[] = $email;
+                continue;
+            }
+            $userID = $row['id'];
+            $count = $this->dao->deleteSent($campaignID, $userID);
+
+            if ($count > 0) {
+                $deleted[] = $email;
+
+                if ($this->model->bounce) {
+                    if ($this->dao->deleteBounces($campaignID, $userID) > 0) {
+                        $bounced[] = $email;
+                    }
+                }
+
+                if ($this->model->totals) {
+                    $this->dao->adjustTotals($campaignID);
+                }
+            } else {
+                $notsent[] = $email;
+            }
+        }
+
+        if ($this->model->requeue && count($deleted) > 0) {
+            $this->dao->requeueMessage($campaignID);
+            $requeued = true;
+        }
+
+        return array(
+                'campaignID' => $campaignID,
+                'deleted' => $deleted,
+                'bounced' => $bounced,
+                'ignored' => $ignored,
+                'notsent' => $notsent,
+                'requeued' => $requeued,
+                'invalid' => $invalid,
+        );
+    }
 
     protected function actionResendFormSubmit()
     {
-        $model = new CampaignsPlugin_Model_ResendForm($this->db);
-
         $this->normalise($_POST);
-        $model->setProperties($_POST);
+        $this->model->setProperties($_POST);
         $session = array();
 
-        if ($model->emails) {
-            $session['resendResults'] = $model->resend();
+        if ($this->model->emails) {
+            $session['resendResults'] = $this->resend();
 
             if (count($session['resendResults']['deleted']) == 0) {
                 $session['errorMessage'] = $this->i18n->get('campaign was not resent to any email addresses');
@@ -55,15 +113,19 @@ class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
 
     protected function actionResendForm()
     {
-        $model = new CampaignsPlugin_Model_ResendForm($this->db);
-        $model->setProperties($_GET);
-        $count = $model->loadBouncedEmails();
-
+        $this->model->setProperties($_GET);
         $toolbar = new CommonPlugin_Toolbar($this);
         $toolbar->addHelpButton('resend');
 
+        if ($this->model->campaignID) {
+            $row = $this->dao->messageById($this->model->campaignID);
+            $subject = $row['subject'];
+        } else {
+            $subject = '';
+        }
         $params = array(
-            'model' => $model,
+            'model' => $this->model,
+            'subject' => $subject,
             'action' => new CommonPlugin_PageURL(null, array('action' => 'resendFormSubmit')),
         );
 
@@ -83,9 +145,14 @@ class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
         );
     }
 
-    public function __construct()
-    {
+    public function __construct(
+        CampaignsPlugin_Model_ResendForm $model,
+        CampaignsPlugin_DAO_Resend $dao,
+        CommonPlugin_DAO_User $userDao
+    ) {
         parent::__construct();
-        $this->db = new CommonPlugin_DB();
+        $this->model = $model;
+        $this->dao = $dao;
+        $this->userDao = $userDao;
     }
 }

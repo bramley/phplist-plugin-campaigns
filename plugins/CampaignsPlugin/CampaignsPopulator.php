@@ -31,9 +31,10 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
     const FORMNAME = 'MessagesForm';
     const CHECKBOXNAME = 'campaignID';
 
-    private $db;
-    private $model;
     private $dao;
+    private $i18n;
+    private $owner;
+    private $type;
 
     private function addButton(WebblerListing $w, $caption, $select, $prompt, array $query)
     {
@@ -80,9 +81,11 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
         );
     }
 
-    public function __construct($model, $i18n)
+    public function __construct($owner, $type, $dao, $i18n)
     {
-        $this->model = $model;
+        $this->owner = $owner;
+        $this->type = $type;
+        $this->dao = $dao;
         $this->i18n = $i18n;
     }
 
@@ -95,12 +98,12 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
          * Populates the webbler list with campaign details
          */
         $w->title = $this->i18n->get('Campaigns');
-        $rows = $this->model->campaigns($start, $limit);
+        $rows = $this->dao->campaigns($this->owner, $this->type, $start, $limit);
 
         if (count($rows) == 0) {
             return;
         }
-        $type = $this->model->type;
+        $type = $this->type;
 
         foreach ($rows as $row) {
             $message = loadMessageData($row['id']);
@@ -182,6 +185,6 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
 
     public function total()
     {
-        return $this->model->totalCampaigns();
+        return $this->dao->totalCampaigns($this->owner, $this->type);
     }
 }

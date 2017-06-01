@@ -71,7 +71,7 @@
         <table>
             <tr>
                 <td WIDTH='30%'><?php echo $this->i18n->get('Campaign'); ?></td>
-                <td WIDTH='70%'><?php echo sprintf('%s | %s', $model->campaignID, $model->subject); ?></td>
+                <td WIDTH='70%'><?php echo sprintf('%s | %s', $model->campaignID, $subject); ?></td>
             </tr>
             <tr>
                 <td><?php echo $this->i18n->get('email addresses (separated by whitespace)'); ?></td>
