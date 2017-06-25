@@ -1,3 +1,6 @@
+version 2.3.1+20170625
+      Write to event log when a campaign is deleted.
+
 version 2.3.0+20170601
       Inject dependencies into controller classes.
       Controller classes use dao directly.

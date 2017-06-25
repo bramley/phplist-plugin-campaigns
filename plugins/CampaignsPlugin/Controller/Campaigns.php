@@ -75,9 +75,12 @@ class CampaignsPlugin_Controller_Campaigns extends CommonPlugin_Controller
     {
         $deleted = array();
         $failed = array();
+        $messageIds = $this->model->{self::CHECKBOXNAME};
+        sort($messageIds, SORT_NUMERIC);
 
-        foreach ($this->model->{self::CHECKBOXNAME} as $id) {
+        foreach ($messageIds as $id) {
             if ($this->dao->deleteMessage($id)) {
+                $this->logEvent($this->i18n->get('Campaign %d deleted by %s', $id, $_SESSION['logindetails']['adminname']));
                 $deleted[] = $id;
             } else {
                 $failed[] = $id;
@@ -100,9 +103,13 @@ class CampaignsPlugin_Controller_Campaigns extends CommonPlugin_Controller
     {
         $campaignId = $this->model->{self::CHECKBOXNAME};
         $r = $this->dao->deleteMessage($campaignId);
-        $_SESSION[self::PLUGIN]['actionResult'] = $r
-            ? $this->i18n->get('Campaign %s deleted', $campaignId)
-            : $this->i18n->get('Unable to delete %s ', $campaignId);
+
+        if ($r) {
+            $_SESSION[self::PLUGIN]['actionResult'] = $this->i18n->get('Campaign %s deleted', $campaignId);
+            $this->logEvent($this->i18n->get('Campaign %d deleted by %s', $campaignId, $_SESSION['logindetails']['adminname']));
+        } else {
+            $_SESSION[self::PLUGIN]['actionResult'] = $this->i18n->get('Unable to delete %s ', $campaignId);
+        }
         header('Location: ' . $this->model->redirect);
         exit;
     }
