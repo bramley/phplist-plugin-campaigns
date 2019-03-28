@@ -1,3 +1,6 @@
+version 2.3.2+20190328
+      Add missing htmlspecialchars() on URL for a confirm button
+
 version 2.3.1+20170625
       Write to event log when a campaign is deleted.
 

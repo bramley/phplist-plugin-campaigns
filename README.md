@@ -50,6 +50,7 @@ This should contain
 ## Version history ##
 
     version     Description
+    2.3.2+20190328  Minor bug fix
     2.3.1+20170625  Write to event log when a campaign is deleted
     2.3.0+20170601  Internal changes and reworking
     2.2.3+20170304  Use core phplist help dialog

@@ -57,9 +57,8 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
     {
         return new confirmButton(
             $this->i18n->get('delete_prompt'),
-            new CommonPlugin_PageURL(
-                null,
-                array('action' => 'deleteOne', 'campaignID' => $id, 'redirect' => $_SERVER['REQUEST_URI'])
+            htmlspecialchars(
+                new CommonPlugin_PageURL(null, ['action' => 'deleteOne', 'campaignID' => $id, 'redirect' => $_SERVER['REQUEST_URI']])
             ),
             'Delete',
             'delete campaign',
@@ -71,10 +70,7 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
     {
         return new confirmButton(
             $this->i18n->get('copy_prompt'),
-            new CommonPlugin_PageURL(
-                null,
-                array('action' => 'copy', 'campaignID' => $id)
-            ),
+            htmlspecialchars(new CommonPlugin_PageURL(null, ['action' => 'copy', 'campaignID' => $id])),
             'Copy',
             'copy campaign',
             'button'
