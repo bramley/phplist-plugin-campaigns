@@ -32,7 +32,7 @@ The benefit of this is that plugins will not be affected when you upgrade phplis
 ### Install through phplist ###
 Install on the Plugins page (menu Config > Plugins) using the package URL `https://github.com/bramley/phplist-plugin-campaigns/archive/master.zip`.
 
-In phplist releases 3.0.5 and earlier there is a bug that can cause a plugin to be incompletely installed on some configurations (<https://mantis.phplist.com/view.php?id=16865>). 
+In phplist releases 3.0.5 and earlier there is a bug that can cause a plugin to be incompletely installed on some configurations (<https://mantis.phplist.com/view.php?id=16865>).
 Check that these files are in the plugin directory. If not then you will need to install manually. The bug has been fixed in release 3.0.6.
 
 * the file CampaignsPlugin.php
@@ -50,6 +50,7 @@ This should contain
 ## Version history ##
 
     version     Description
+    2.3.3+20190509  Improve display of action buttons for the trevellin theme
     2.3.2+20190328  Minor bug fix
     2.3.1+20170625  Write to event log when a campaign is deleted
     2.3.0+20170601  Internal changes and reworking

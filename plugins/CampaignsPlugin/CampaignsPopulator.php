@@ -145,15 +145,19 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
                 $resendLink = '';
                 $requeueLink = '';
             }
-
+            $columnFormat = <<<END
+<div class="messageactions">
+    <span class="edit">%s</span>
+    <span class="copy">%s</span>
+    <span class="send-list">%s</span>
+    <span class="delete">%s</span>
+    <span class="resend">%s</span>
+</div>
+END;
             $w->addColumnHtml(
                 $key,
                 $this->i18n->get('action'),
-                '<span class="edit">' . $editLink . '</span>'
-                . '<span class="copy">' . $copyButton->show() . '</span>'
-                . '<span class="re-send">' . $resendLink . '</span>'
-                . '<span class="resend">' . $requeueLink . '</span>'
-                . '<span class="delete">' . $deleteButton->show() . '</span>'
+                sprintf($columnFormat, $editLink, $copyButton->show(), $resendLink, $deleteButton->show(), $requeueLink)
             );
             $select = CHtml::checkBox(self::CHECKBOXNAME . '[]', false, array('value' => $row['id']));
             $w->addColumnHtml($key, $this->i18n->get('select'), $select);

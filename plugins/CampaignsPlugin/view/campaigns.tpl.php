@@ -1,7 +1,7 @@
 <?php
 /**
  * CampaignsPlugin for phplist
- * 
+ *
  * This file is a part of CampaignsPlugin.
  *
  * This plugin is free software: you can redistribute it and/or modify
@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * @category  phplist
  * @package   CampaignsPlugin
  * @author    Duncan Cameron
@@ -76,25 +76,6 @@ function formSubmit(select, prompt, name, radio, url, noneselectederror, onlyone
 </script>
 END;
 ?>
-<style>
-span.copy a.button {
-    background:url("<?php echo $pageroot; ?>/admin/ui/dressprow/images/16x16/plus.png") no-repeat scroll 50% 50%;
-    width: 16px;
-    height: 16px;
-    vertical-align: middle;
-    overflow: hidden;
-    text-indent: -9999px;
-}
-span.re-send a.button {
-    background:url("<?php echo $pageroot; ?>/admin/ui/dressprow/images/16x16/customers.png") no-repeat scroll 50% 50%;
-    width: 16px;
-    height: 16px;
-    vertical-align: middle;
-    overflow: hidden;
-    text-indent: -9999px;
-}
-
-</style>
 <div id="top">
     <hr/>
 <?php echo $toolbar; ?>
