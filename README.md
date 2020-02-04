@@ -22,21 +22,15 @@ The plugin adds an item to the Campaigns menu to display a page of campaigns org
 
 This plugin requires phplist release 3.2.2 or later, and requires php version 5.4 or later.
 
-You also need to install the Common Plugin version 3.6.3 or later, and should install or upgrade to the latest version.
+You also need to install the Common Plugin version 3.6.3 or later. This plugin is now included with phpList so
+you should not normally need to install it and need only to enable it on the Manage Plugins page.
+
 See <https://github.com/bramley/phplist-plugin-common>
 
-### Set the plugin directory ###
-You can use a directory outside of the web root by changing the definition of `PLUGIN_ROOTDIR` in config.php.
-The benefit of this is that plugins will not be affected when you upgrade phplist.
-
 ### Install through phplist ###
-Install on the Plugins page (menu Config > Plugins) using the package URL `https://github.com/bramley/phplist-plugin-campaigns/archive/master.zip`.
+Install on the Plugins page (menu Config > Manage Plugins) using the package URL
 
-In phplist releases 3.0.5 and earlier there is a bug that can cause a plugin to be incompletely installed on some configurations (<https://mantis.phplist.com/view.php?id=16865>).
-Check that these files are in the plugin directory. If not then you will need to install manually. The bug has been fixed in release 3.0.6.
-
-* the file CampaignsPlugin.php
-* the directory CampaignsPlugin
+`https://github.com/bramley/phplist-plugin-campaigns/archive/master.zip`
 
 ### Install manually ###
 Download the plugin zip file from <https://github.com/bramley/phplist-plugin-campaigns/archive/master.zip>
@@ -47,9 +41,14 @@ This should contain
 * the file CampaignsPlugin.php
 * the directory CampaignsPlugin
 
+## Usage ##
+
+For guidance on usage see the plugin page within the phplist documentation site <https://resources.phplist.com/plugin/campaigns>
+
 ## Version history ##
 
     version     Description
+    2.3.4+20200204  Revise README
     2.3.3+20190509  Improve display of action buttons for the trevellin theme
     2.3.2+20190328  Minor bug fix
     2.3.1+20170625  Write to event log when a campaign is deleted
