@@ -7,7 +7,7 @@
  * @category  phplist
  *
  * @author    Duncan Cameron
- * @copyright 2014-2016 Duncan Cameron
+ * @copyright 2014-2020 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
  */
 class CampaignsPlugin extends phplistPlugin
@@ -45,26 +45,24 @@ class CampaignsPlugin extends phplistPlugin
         global $plugins;
 
         return array(
-            'Common plugin v3.6.3 or later installed' => (
+            'Common plugin v3.8.0 or later installed' => (
                 phpListPlugin::isEnabled('CommonPlugin')
-                && version_compare($plugins['CommonPlugin']->version, '3.6.3') >= 0
+                && version_compare($plugins['CommonPlugin']->version, '3.8.0') >= 0
             ),
             'PHP version 5.4.0 or greater' => version_compare(PHP_VERSION, '5.4') > 0,
-            'phpList version 3.2.2 or later' => version_compare(VERSION, '3.2.2') >= 0,
+            'phpList version 3.3.2 or later' => version_compare(VERSION, '3.3.2') >= 0,
         );
     }
 
     /**
      * Use this hook for translated menu items.
      */
-    public function sendFormats()
+    public function activate()
     {
-        global $plugins;
-
-        require_once $plugins['CommonPlugin']->coderoot . 'Autoloader.php';
         $i18n = new CommonPlugin_I18N($this);
         $this->pageTitles = array(
             'campaigns' => $i18n->get('Manage campaigns'),
+            'resend' => $i18n->get('Resend campaign'),
         );
     }
 
