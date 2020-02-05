@@ -16,7 +16,7 @@
  * @category  phplist
  *
  * @author    Duncan Cameron
- * @copyright 2014-2016 Duncan Cameron
+ * @copyright 2014-2020 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
  *
  * @link      http://forums.phplist.com/
@@ -93,18 +93,33 @@ class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
 
     protected function actionResendFormSubmit()
     {
-        $this->normalise($_POST);
-        $this->model->setProperties($_POST);
         $session = array();
 
-        if ($this->model->emails) {
-            $session['resendResults'] = $this->resend();
+        if (isset($_POST['loadbounced'])) {
+            // load bounced email addresses
+            $bouncedEmails = $this->dao->bouncedEmails($this->model->campaignID);
 
-            if (count($session['resendResults']['deleted']) == 0) {
-                $session['errorMessage'] = $this->i18n->get('campaign was not resent to any email addresses');
+            if ($bouncedEmails) {
+                $emails = implode("\n", $bouncedEmails);
+                $this->model->setProperties(['emails' => $emails]);
+            } else {
+                $session['errorMessage'] = $this->i18n->get('There are no bounced emails to load');
             }
         } else {
-            $session['errorMessage'] = $this->i18n->get('email addresses must be entered');
+            // process the entered email addresses
+            $this->normalise($_POST);
+            $this->model->setProperties($_POST);
+
+            if ($this->model->emails) {
+                $session['resendResults'] = $this->resend();
+
+                if (count($session['resendResults']['deleted']) == 0) {
+                    $session['errorMessage'] = $this->i18n->get('campaign was not resent to any email addresses');
+                }
+                $this->model->setProperties(['emails' => '']);
+            } else {
+                $session['errorMessage'] = $this->i18n->get('email addresses must be entered');
+            }
         }
         $_SESSION[self::PLUGIN] = $session;
         header('Location: ' . new CommonPlugin_PageURL(null, array('action' => 'resendForm')));
@@ -134,7 +149,7 @@ class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
             unset($_SESSION[self::PLUGIN]);
         }
         $panel = new UIPanel(
-            $this->i18n->get('Resend campaign'),
+            $this->i18n->get('Subscribers'),
             $this->render(__DIR__ . '/../view/resend_panel.tpl.php', $params)
         );
         echo $this->render(
@@ -143,6 +158,11 @@ class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
                 'panel' => $panel->display(),
             )
         );
+    }
+
+    protected function actionDefault()
+    {
+        echo '<p class="error">This page cannot be called directly</p>';
     }
 
     public function __construct(

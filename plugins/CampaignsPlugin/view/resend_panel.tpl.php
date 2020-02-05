@@ -1,7 +1,7 @@
 <?php
 /**
  * CampaignsPlugin for phplist
- * 
+ *
  * This file is a part of CampaignsPlugin.
  *
  * This plugin is free software: you can redistribute it and/or modify
@@ -12,18 +12,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * @category  phplist
  * @package   CampaignsPlugin
  * @author    Duncan Cameron
- * @copyright 2014-2016 Duncan Cameron
+ * @copyright 2014-2020 Duncan Cameron
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License, Version 3
  * @link      http://forums.phplist.com/
  */
 
 /**
  * This is the HTML template for the plugin page
- * 
+ *
  */
 
 /**
@@ -34,12 +34,12 @@
  * - $errorMessage: resend error message
  * - $resendResults: array of results
  * - $action: form action URL
- * - $message: 
+ * - $message:
  */
 ?>
     <div>
 <?php if (isset($errorMessage)): ?>
-        <div class="note"><?php echo $errorMessage ?></div>
+        <div class="error"><?php echo $errorMessage ?></div>
 <?php endif; ?>
 <?php if (isset($resendResults)): ?>
         <div class="note">
@@ -74,7 +74,9 @@
                 <td WIDTH='70%'><?php echo sprintf('%s | %s', $model->campaignID, $subject); ?></td>
             </tr>
             <tr>
-                <td><?php echo $this->i18n->get('email addresses (separated by whitespace)'); ?></td>
+                <td>
+                    <div><input type="submit" value="<?php echo $this->i18n->get('Load bounced') ?>" name='loadbounced' /></div>
+                    <?php echo $this->i18n->get('email addresses (separated by whitespace)'); ?></td>
                 <td>
                     <textarea name='emails' rows='10' cols='40' ><?php echo $model->emails; ?></textarea>
                 </td>
