@@ -39,62 +39,65 @@
 ?>
     <div>
 <?php if (isset($errorMessage)): ?>
-        <div class="error"><?php echo $errorMessage ?></div>
+        <div class="error"><?= $errorMessage ?></div>
 <?php endif; ?>
 <?php if (isset($resendResults)): ?>
-        <div class="note">
-        <b><?php echo $this->i18n->get('Campaign'); ?> <?php echo $resendResults['campaignID'] ?></b>
-        <table>
+        <div>
     <?php if ($resendResults['deleted']): ?>
-            <tr><td><?php echo $this->i18n->get('campaign will be resent to these subscribers'); ?> - </td><td><?php echo implode(', ', $resendResults['deleted']) ?></td></tr>
+            <div class="note">
+                <?= $this->i18n->get('campaign will be resent to these subscribers'), '<br/>', implode('<br/>', $resendResults['deleted']); ?>
+            </div>
     <?php endif; ?>
     <?php if ($resendResults['bounced']): ?>
-            <tr><td><?php echo $this->i18n->get('bounces deleted for'); ?> - </td><td><?php echo implode(', ', $resendResults['bounced']) ?></td></tr>
+            <div class="note">
+                <?= $this->i18n->get('bounces deleted for'), '<br/>', implode('<br/>', $resendResults['bounced']); ?>
+            </div>
     <?php endif; ?>
     <?php if ($resendResults['notsent']): ?>
-            <tr><td><?php echo $this->i18n->get('campaign was not originally sent to these subscribers'); ?> - </td><td><?php echo implode(', ', $resendResults['notsent']) ?></td></tr>
+            <div class="note">
+                <?= $this->i18n->get('campaign was not originally sent to these subscribers'), '<br/>', implode('<br/>', $resendResults['notsent']); ?>
+            </div>
     <?php endif; ?>
     <?php if ($resendResults['ignored']): ?>
-            <tr><td><?php echo $this->i18n->get('these subscribers are unknown'); ?> - </td><td><?php echo implode(', ', $resendResults['ignored']) ?></td></tr>
+            <div class="note">
+                <?= $this->i18n->get('these subscribers are unknown'), '<br/>', implode('<br/>', $resendResults['ignored']); ?>
+            </div>
     <?php endif; ?>
     <?php if ($resendResults['invalid']): ?>
-            <tr><td><?php echo $this->i18n->get('these are invalid email addresses'); ?> - </td><td><?php echo implode(', ', $resendResults['invalid']) ?></td></tr>
+            <div class="note">
+                <?= $this->i18n->get('these are invalid email addresses'), '<br/>', implode('<br/>', $resendResults['invalid']); ?>
+            </div>
     <?php endif; ?>
-        </table>
     <?php if ($resendResults['requeued']): ?>
-        <p><?php echo $this->i18n->get('Campaign requeued'); ?></p>
+            <p><?= $this->i18n->get('Campaign requeued'); ?></p>
     <?php endif; ?>
         </div>
 <?php endif; ?>
     </div>
-    <form method='POST' action='<?php echo $action; ?>'>
+    <form method="POST" action="<?= $action; ?>">
         <table>
             <tr>
-                <td WIDTH='30%'><?php echo $this->i18n->get('Campaign'); ?></td>
-                <td WIDTH='70%'><?php echo sprintf('%s | %s', $model->campaignID, $subject); ?></td>
-            </tr>
-            <tr>
                 <td>
-                    <div><input type="submit" value="<?php echo $this->i18n->get('Load bounced') ?>" name='loadbounced' /></div>
-                    <?php echo $this->i18n->get('email addresses (separated by whitespace)'); ?></td>
+                    <div><input type="submit" value="<?= $this->i18n->get('Load bounced') ?>" name="loadbounced" /></div>
+                    <?= $this->i18n->get('email addresses (separated by whitespace)'); ?></td>
                 <td>
-                    <textarea name='emails' rows='10' cols='40' ><?php echo $model->emails; ?></textarea>
+                    <textarea name="emails" rows="10" cols="40" ><?= $model->emails; ?></textarea>
                 </td>
             </tr>
             <tr>
-                <td><?php echo CHtml::label($this->i18n->get('Delete associated bounce records'), 'bounce'); ?></td>
-                <td><?php echo CHtml::checkBox('bounce', $model->bounce, array('uncheckValue' => 0)); ?></td>
+                <td><?= CHtml::label($this->i18n->get('Delete associated bounce records'), 'bounce'); ?></td>
+                <td><?= CHtml::checkBox('bounce', $model->bounce, array('uncheckValue' => 0)); ?></td>
             </tr>
             <tr>
-                <td><?php echo CHtml::label($this->i18n->get('Adjust campaign totals'), 'totals'); ?></td>
-                <td><?php echo CHtml::checkBox('totals', $model->totals, array('uncheckValue' => 0)); ?></td>
+                <td><?= CHtml::label($this->i18n->get('Adjust campaign totals'), 'totals'); ?></td>
+                <td><?= CHtml::checkBox('totals', $model->totals, array('uncheckValue' => 0)); ?></td>
             </tr>
             <tr>
-                <td><?php echo CHtml::label($this->i18n->get('Requeue the campaign'), 'requeue'); ?></td>
-                <td><?php echo CHtml::checkBox('requeue', $model->requeue, array('uncheckValue' => 0)); ?></td>
+                <td><?= CHtml::label($this->i18n->get('Requeue the campaign'), 'requeue'); ?></td>
+                <td><?= CHtml::checkBox('requeue', $model->requeue, array('uncheckValue' => 0)); ?></td>
             </tr>
         </table>
-        <input type=submit value="<?php echo $this->i18n->get('Submit') ?>" name='submit' />
+        <input type="submit" value="<?= $this->i18n->get('Submit') ?>" name="submit" />
     </form>
 
 

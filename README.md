@@ -48,6 +48,7 @@ For guidance on usage see the plugin page within the phplist documentation site 
 ## Version history ##
 
     version     Description
+    2.4.0+20200216  Add function to load email addresses that had bounced when resending a campaign
     2.3.4+20200204  Revise README
     2.3.3+20190509  Improve display of action buttons for the trevellin theme
     2.3.2+20190328  Minor bug fix

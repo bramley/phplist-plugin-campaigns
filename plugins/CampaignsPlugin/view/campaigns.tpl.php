@@ -78,15 +78,15 @@ END;
 ?>
 <div id="top">
     <hr/>
-<?php echo $toolbar; ?>
-<?php echo $tabs; ?>
-    <div style='padding-top: 10px;' >
+<?= $toolbar; ?>
+<?= $tabs; ?>
+    <div style="padding-top: 10px;" >
 <?php if (isset($actionResult)): ?>
-        <div class="note"><?php echo $actionResult; ?></div>
+        <div class="note"><?= $actionResult; ?></div>
 <?php endif; ?>
-        <form name='<?php echo $formName; ?>' method='post'>
-<?php echo $listing; ?>
+        <form name="<?= $formName; ?>" method="post">
+<?= $listing; ?>
         </form>
     </div>
-    <a href='#top'>[<?php echo $this->i18n->get('top') ?>]</a>
+    <a href="#top">[<?= $this->i18n->get('top') ?>]</a>
 </div>

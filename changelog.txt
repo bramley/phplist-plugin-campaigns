@@ -1,3 +1,8 @@
+version 2.4.0+20200216
+      Add function to load email addresses that had bounced
+      Update dependencies
+      Tidy-up the html in the view template files
+
 version 2.3.4+20200204
       Revise README
 

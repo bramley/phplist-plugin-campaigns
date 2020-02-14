@@ -149,7 +149,7 @@ class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
             unset($_SESSION[self::PLUGIN]);
         }
         $panel = new UIPanel(
-            $this->i18n->get('Subscribers'),
+            sprintf('%s %s | %s', $this->i18n->get('Campaign'), $this->model->campaignID, $subject),
             $this->render(__DIR__ . '/../view/resend_panel.tpl.php', $params)
         );
         echo $this->render(
