@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
     'CampaignsPlugin_CampaignsPopulator' => $base . '/CampaignsPlugin/CampaignsPopulator.php',
     'CampaignsPlugin_ControllerFactory' => $base . '/CampaignsPlugin/ControllerFactory.php',
     'CampaignsPlugin_Controller_Campaigns' => $base . '/CampaignsPlugin/Controller/Campaigns.php',
@@ -9,4 +9,4 @@ return array(
     'CampaignsPlugin_DAO_Resend' => $base . '/CampaignsPlugin/DAO/Resend.php',
     'CampaignsPlugin_Model_Campaigns' => $base . '/CampaignsPlugin/Model/Campaigns.php',
     'CampaignsPlugin_Model_ResendForm' => $base . '/CampaignsPlugin/Model/ResendForm.php',
-);
+];

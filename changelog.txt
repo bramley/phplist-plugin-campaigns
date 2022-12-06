@@ -1,3 +1,8 @@
+version 2.4.1+20221206
+      Add action buttons to view the campaign and show statistics.
+      Separate the buttons applicable only to sent campaigns.
+      Fixes #6
+
 version 2.4.0+20200216
       Add function to load email addresses that had bounced
       Update dependencies

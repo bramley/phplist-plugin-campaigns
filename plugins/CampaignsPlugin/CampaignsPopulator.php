@@ -61,7 +61,7 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
                 new CommonPlugin_PageURL(null, ['action' => 'deleteOne', 'campaignID' => $id, 'redirect' => $_SERVER['REQUEST_URI']])
             ),
             'Delete',
-            'delete campaign',
+            'delete',
             'button'
         );
     }
@@ -72,7 +72,7 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
             $this->i18n->get('copy_prompt'),
             htmlspecialchars(new CommonPlugin_PageURL(null, ['action' => 'copy', 'campaignID' => $id])),
             'Copy',
-            'copy campaign',
+            'copy',
             'button'
         );
     }
@@ -122,42 +122,56 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
             if ($type == 'active') {
                 $w->addColumn($key, $this->i18n->get('status'), $row['status'], '');
             }
-            $deleteButton = $this->confirmDeleteButton($row['id']);
-            $copyButton = $this->confirmCopyButton($row['id']);
+            $deleteButton = $this->confirmDeleteButton($row['id'])->show();
+            $copyButton = $this->confirmCopyButton($row['id'])->show();
             $editLink = new CommonPlugin_PageLink(
                 new CommonPlugin_PageURL('send', array('id' => $row['id'])),
                 'Edit',
-                array('class' => 'button', 'title' => 'edit campaign')
+                array('class' => 'button', 'title' => 'edit')
+            );
+            $viewLink = new CommonPlugin_PageLink(
+                new CommonPlugin_PageURL('message', array('id' => $row['id'])),
+                'View',
+                array('class' => 'button', 'title' => 'view')
             );
 
             if ($type == 'sent') {
                 $resendLink = new CommonPlugin_PageLink(
                     new CommonPlugin_PageURL('resend', array('pi' => self::PLUGIN, 'action' => 'resendForm', 'campaignID' => $row['id'])),
                     'Resend',
-                    array('class' => 'button', 'title' => 'resend campaign')
+                    array('class' => 'button', 'title' => 'resend to subscribers')
                 );
                 $requeueLink = new CommonPlugin_PageLink(
                     new CommonPlugin_PageURL(null, array('action' => 'requeue', 'campaignID' => $row['id'])),
                     'Requeue',
-                    array('class' => 'button', 'title' => 'requeue campaign')
+                    array('class' => 'button', 'title' => 'requeue')
+                );
+                $statsLink = new CommonPlugin_PageLink(
+                    new CommonPlugin_PageURL('statsoverview', array('id' => $row['id'])),
+                    'Stats',
+                    array('class' => 'button', 'title' => 'statistics')
                 );
             } else {
                 $resendLink = '';
                 $requeueLink = '';
+                $statsLink = '';
             }
             $columnFormat = <<<END
 <div class="messageactions">
+    <span class="view">%s</span>
     <span class="edit">%s</span>
     <span class="copy">%s</span>
-    <span class="send-list">%s</span>
     <span class="delete">%s</span>
+    <br/>
+    <span class="send-list">%s</span>
     <span class="resend">%s</span>
+    <span class="stats">%s</span>
 </div>
 END;
             $w->addColumnHtml(
                 $key,
                 $this->i18n->get('action'),
-                sprintf($columnFormat, $editLink, $copyButton->show(), $resendLink, $deleteButton->show(), $requeueLink)
+                sprintf($columnFormat, $viewLink, $editLink, $copyButton, $deleteButton, $resendLink, $requeueLink, $statsLink)
             );
             $select = CHtml::checkBox(self::CHECKBOXNAME . '[]', false, array('value' => $row['id']));
             $w->addColumnHtml($key, $this->i18n->get('select'), $select);
