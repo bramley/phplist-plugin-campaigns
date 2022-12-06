@@ -48,7 +48,8 @@ For guidance on usage see the plugin page within the phplist documentation site 
 ## Version history ##
 
     version     Description
-    2.4.1+20221206
+    2.4.2+20221206  Attempt to make the action buttons not wrap
+    2.4.1+20221206  Add action buttons to view the campaign and show statistics
     2.4.0+20200216  Add function to load email addresses that had bounced when resending a campaign
     2.3.4+20200204  Revise README
     2.3.3+20190509  Improve display of action buttons for the trevellin theme

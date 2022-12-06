@@ -1,3 +1,6 @@
+version 2.4.2+20221206
+      Attempt to make the action buttons not wrap
+
 version 2.4.1+20221206
       Add action buttons to view the campaign and show statistics.
       Separate the buttons applicable only to sent campaigns.

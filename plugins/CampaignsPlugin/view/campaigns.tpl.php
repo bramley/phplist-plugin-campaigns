@@ -74,6 +74,12 @@ function formSubmit(select, prompt, name, radio, url, noneselectederror, onlyone
     }
 }
 </script>
+<style type="text/css">
+.messageactions {
+    white-space: nowrap;
+}
+</style>
+
 END;
 ?>
 <div id="top">
