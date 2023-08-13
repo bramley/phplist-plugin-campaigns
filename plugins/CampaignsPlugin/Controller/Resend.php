@@ -46,7 +46,7 @@ class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
         $emails = preg_split('/\s+/', $this->model->emails, null, PREG_SPLIT_NO_EMPTY);
 
         foreach ($emails as $email) {
-            if (!(filter_var($email, FILTER_VALIDATE_EMAIL))) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $invalid[] = $email;
                 continue;
             }
