@@ -34,7 +34,6 @@
  * - $listing: HTML result of listing display
  */
 global $pagefooter;
-global $pageroot;
 
 $pagefooter[basename(__FILE__)] = <<<'END'
 
