@@ -25,7 +25,7 @@
 /**
  * This is the controller class that implements the action() methods.
  */
-class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
+class CampaignsPlugin_Controller_Resend extends phpList\plugin\Common\Controller
 {
     const PLUGIN = 'CampaignsPlugin';
 
@@ -122,14 +122,14 @@ class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
             }
         }
         $_SESSION[self::PLUGIN] = $session;
-        header('Location: ' . new CommonPlugin_PageURL(null, array('action' => 'resendForm')));
+        header('Location: ' . new phpList\plugin\Common\PageURL(null, array('action' => 'resendForm')));
         exit;
     }
 
     protected function actionResendForm()
     {
         $this->model->setProperties($_GET);
-        $toolbar = new CommonPlugin_Toolbar($this);
+        $toolbar = new phpList\plugin\Common\Toolbar($this);
         $toolbar->addHelpButton('resend');
 
         if ($this->model->campaignID) {
@@ -141,7 +141,7 @@ class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
         $params = array(
             'model' => $this->model,
             'subject' => $subject,
-            'action' => new CommonPlugin_PageURL(null, array('action' => 'resendFormSubmit')),
+            'action' => new phpList\plugin\Common\PageURL(null, array('action' => 'resendFormSubmit')),
         );
 
         if (isset($_SESSION[self::PLUGIN])) {
@@ -168,7 +168,7 @@ class CampaignsPlugin_Controller_Resend extends CommonPlugin_Controller
     public function __construct(
         CampaignsPlugin_Model_ResendForm $model,
         CampaignsPlugin_DAO_Resend $dao,
-        CommonPlugin_DAO_User $userDao
+        phpList\plugin\Common\DAO\User $userDao
     ) {
         parent::__construct();
         $this->model = $model;

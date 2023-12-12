@@ -21,7 +21,7 @@
  *
  * @link      http://forums.phplist.com/
  */
-class CampaignsPlugin_DAO_Campaign extends CommonPlugin_DAO_Message
+class CampaignsPlugin_DAO_Campaign extends phpList\plugin\Common\DAO\Message
 {
     private function wrapQuotes($v)
     {

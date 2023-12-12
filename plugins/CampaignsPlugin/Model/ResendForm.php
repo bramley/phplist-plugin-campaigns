@@ -27,7 +27,7 @@
  *
  * @category  phplist
  */
-class CampaignsPlugin_Model_ResendForm extends CommonPlugin_Model
+class CampaignsPlugin_Model_ResendForm extends phpList\plugin\Common\Model
 {
     /*
      *    Private variables

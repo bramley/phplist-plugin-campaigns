@@ -48,6 +48,7 @@ For guidance on usage see the plugin page within the phplist documentation site 
 ## Version history ##
 
     version     Description
+    2.4.4+20231212  Minor internal changes
     2.4.3+20221231  Update cs fixer
     2.4.2+20221206  Attempt to make the action buttons not wrap
     2.4.1+20221206  Add action buttons to view the campaign and show statistics

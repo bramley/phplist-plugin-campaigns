@@ -21,9 +21,9 @@
  */
 
 /**
- * This class is a concrete implementation of CommonPlugin_ControllerFactoryBase.
+ * This class is a concrete implementation of phpList\plugin\Common\ControllerFactoryBase.
  */
-class CampaignsPlugin_ControllerFactory extends CommonPlugin_ControllerFactoryBase
+class CampaignsPlugin_ControllerFactory extends phpList\plugin\Common\ControllerFactoryBase
 {
     /**
      * Custom implementation to create a controller using plugin and page.
@@ -31,7 +31,7 @@ class CampaignsPlugin_ControllerFactory extends CommonPlugin_ControllerFactoryBa
      * @param string $pi     the plugin
      * @param array  $params further parameters from the URL
      *
-     * @return CommonPlugin_Controller
+     * @return phpList\plugin\Common\Controller
      */
     public function createController($pi, array $params)
     {

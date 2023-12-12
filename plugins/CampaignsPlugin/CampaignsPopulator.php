@@ -25,7 +25,7 @@
 /**
  * This class populates the listing of campaigns.
  */
-class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
+class CampaignsPlugin_CampaignsPopulator implements phpList\plugin\Common\IPopulator
 {
     const PLUGIN = 'CampaignsPlugin';
     const FORMNAME = 'MessagesForm';
@@ -46,7 +46,7 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
                 $prompt,
                 self::FORMNAME,
                 self::CHECKBOXNAME,
-                new CommonPlugin_PageURL(null, $query),
+                new phpList\plugin\Common\PageURL(null, $query),
                 $this->i18n->get('none_selected_error'),
                 $this->i18n->get('only_one_allowed_error')
             ))
@@ -58,7 +58,7 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
         return new confirmButton(
             $this->i18n->get('delete_prompt'),
             htmlspecialchars(
-                new CommonPlugin_PageURL(null, ['action' => 'deleteOne', 'campaignID' => $id, 'redirect' => $_SERVER['REQUEST_URI']])
+                new phpList\plugin\Common\PageURL(null, ['action' => 'deleteOne', 'campaignID' => $id, 'redirect' => $_SERVER['REQUEST_URI']])
             ),
             'Delete',
             'delete',
@@ -70,7 +70,7 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
     {
         return new confirmButton(
             $this->i18n->get('copy_prompt'),
-            htmlspecialchars(new CommonPlugin_PageURL(null, ['action' => 'copy', 'campaignID' => $id])),
+            htmlspecialchars(new phpList\plugin\Common\PageURL(null, ['action' => 'copy', 'campaignID' => $id])),
             'Copy',
             'copy',
             'button'
@@ -86,7 +86,7 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
     }
 
     /*
-     * Implementation of CommonPlugin_IPopulator
+     * Implementation of phpList\plugin\Common\IPopulator
      */
     public function populate(WebblerListing $w, $start, $limit)
     {
@@ -106,7 +106,7 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
             $key = ($message['subject'] == $message['campaigntitle'])
                 ? "$row[id] | $message[subject]"
                 : "$row[id] | $message[campaigntitle]<br><b>$message[subject]</b>";
-            $w->addElement($key, new CommonPlugin_PageURL('message', array('id' => $row['id'])));
+            $w->addElement($key, new phpList\plugin\Common\PageURL('message', array('id' => $row['id'])));
             $details = array(
                 sprintf('%s: %s', $this->i18n->get('From'), $row['fromfield']),
                 sprintf('%s: %s', $this->i18n->get('Entered'), formatDateTime($row['entered'])),
@@ -124,30 +124,30 @@ class CampaignsPlugin_CampaignsPopulator implements CommonPlugin_IPopulator
             }
             $deleteButton = $this->confirmDeleteButton($row['id'])->show();
             $copyButton = $this->confirmCopyButton($row['id'])->show();
-            $editLink = new CommonPlugin_PageLink(
-                new CommonPlugin_PageURL('send', array('id' => $row['id'])),
+            $editLink = new phpList\plugin\Common\PageLink(
+                new phpList\plugin\Common\PageURL('send', array('id' => $row['id'])),
                 'Edit',
                 array('class' => 'button', 'title' => 'edit')
             );
-            $viewLink = new CommonPlugin_PageLink(
-                new CommonPlugin_PageURL('message', array('id' => $row['id'])),
+            $viewLink = new phpList\plugin\Common\PageLink(
+                new phpList\plugin\Common\PageURL('message', array('id' => $row['id'])),
                 'View',
                 array('class' => 'button', 'title' => 'view')
             );
 
             if ($type == 'sent') {
-                $resendLink = new CommonPlugin_PageLink(
-                    new CommonPlugin_PageURL('resend', array('pi' => self::PLUGIN, 'action' => 'resendForm', 'campaignID' => $row['id'])),
+                $resendLink = new phpList\plugin\Common\PageLink(
+                    new phpList\plugin\Common\PageURL('resend', array('pi' => self::PLUGIN, 'action' => 'resendForm', 'campaignID' => $row['id'])),
                     'Resend',
                     array('class' => 'button', 'title' => 'resend to subscribers')
                 );
-                $requeueLink = new CommonPlugin_PageLink(
-                    new CommonPlugin_PageURL(null, array('action' => 'requeue', 'campaignID' => $row['id'])),
+                $requeueLink = new phpList\plugin\Common\PageLink(
+                    new phpList\plugin\Common\PageURL(null, array('action' => 'requeue', 'campaignID' => $row['id'])),
                     'Requeue',
                     array('class' => 'button', 'title' => 'requeue')
                 );
-                $statsLink = new CommonPlugin_PageLink(
-                    new CommonPlugin_PageURL('statsoverview', array('id' => $row['id'])),
+                $statsLink = new phpList\plugin\Common\PageLink(
+                    new phpList\plugin\Common\PageURL('statsoverview', array('id' => $row['id'])),
                     'Stats',
                     array('class' => 'button', 'title' => 'statistics')
                 );

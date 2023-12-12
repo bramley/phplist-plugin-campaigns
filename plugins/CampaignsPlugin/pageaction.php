@@ -23,7 +23,7 @@
 /**
  * This page and class are used to display the phplist help dialog.
  */
-class CampaignsPlugin_PageactionController extends CommonPlugin_Controller
+class CampaignsPlugin_PageactionController extends phpList\plugin\Common\Controller
 {
 }
 

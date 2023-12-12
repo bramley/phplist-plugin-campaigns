@@ -25,7 +25,7 @@
 /**
  * This class provides access to the phplist database.
  */
-class CampaignsPlugin_DAO_Resend extends CommonPlugin_DAO_Message
+class CampaignsPlugin_DAO_Resend extends phpList\plugin\Common\DAO\Message
 {
     public function deleteSent($mid, $userid)
     {

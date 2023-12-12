@@ -35,16 +35,16 @@ return new Picotainer([
         return new CampaignsPlugin_Controller_Resend(
             new CampaignsPlugin_Model_ResendForm(),
             $container->get('CampaignsPlugin_DAO_Resend'),
-            $container->get('CommonPlugin_DAO_User')
+            $container->get('phpList\plugin\Common\DAO\User')
         );
     },
     'CampaignsPlugin_DAO_Campaign' => function (ContainerInterface $container) {
-        return new CampaignsPlugin_DAO_Campaign(new CommonPlugin_DB());
+        return new CampaignsPlugin_DAO_Campaign(new phpList\plugin\Common\DB());
     },
     'CampaignsPlugin_DAO_Resend' => function (ContainerInterface $container) {
-        return new CampaignsPlugin_DAO_Resend(new CommonPlugin_DB());
+        return new CampaignsPlugin_DAO_Resend(new phpList\plugin\Common\DB());
     },
-    'CommonPlugin_DAO_User' => function (ContainerInterface $container) {
-        return new CommonPlugin_DAO_User(new CommonPlugin_DB());
+    'phpList\plugin\Common\DAO\User' => function (ContainerInterface $container) {
+        return new phpList\plugin\Common\DAO\User(new phpList\plugin\Common\DB());
     },
 ]);

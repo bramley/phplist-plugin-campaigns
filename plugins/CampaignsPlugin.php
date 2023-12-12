@@ -59,7 +59,7 @@ class CampaignsPlugin extends phplistPlugin
      */
     public function activate()
     {
-        $i18n = new CommonPlugin_I18N($this);
+        $i18n = new phpList\plugin\Common\I18N($this);
         $this->pageTitles = array(
             'campaigns' => $i18n->get('Manage campaigns'),
             'resend' => $i18n->get('Resend campaign'),

@@ -25,7 +25,7 @@
 /**
  * This is the controller class that implements the action() methods.
  */
-class CampaignsPlugin_Controller_Campaigns extends CommonPlugin_Controller
+class CampaignsPlugin_Controller_Campaigns extends phpList\plugin\Common\Controller
 {
     const PLUGIN = 'CampaignsPlugin';
     const FORMNAME = 'MessagesForm';
@@ -41,10 +41,10 @@ class CampaignsPlugin_Controller_Campaigns extends CommonPlugin_Controller
             'active' => $this->i18n->get('tab_active'),
             'draft' => $this->i18n->get('tab_draft'),
         );
-        $tabs = new CommonPlugin_Tabs();
+        $tabs = new phpList\plugin\Common\Tabs();
 
         foreach ($captions as $key => $value) {
-            $tabs->addTab($value, new CommonPlugin_PageURL(null, array('type' => $key)));
+            $tabs->addTab($value, new phpList\plugin\Common\PageURL(null, array('type' => $key)));
         }
         $tabs->setCurrent($captions[$type]);
 
@@ -57,7 +57,7 @@ class CampaignsPlugin_Controller_Campaigns extends CommonPlugin_Controller
         $_SESSION[self::PLUGIN]['actionResult'] = $r
             ? $this->i18n->get('Campaign %d requeued', $this->model->{self::CHECKBOXNAME})
             : $this->i18n->get('Unable to requeue campaign %d', $this->model->{self::CHECKBOXNAME});
-        header('Location: ' . new CommonPlugin_PageURL(null, array('type' => 'active')));
+        header('Location: ' . new phpList\plugin\Common\PageURL(null, array('type' => 'active')));
         exit;
     }
 
@@ -67,7 +67,7 @@ class CampaignsPlugin_Controller_Campaigns extends CommonPlugin_Controller
         $_SESSION[self::PLUGIN]['actionResult'] = $id
             ? $this->i18n->get('Campaign %d copied to %d', $this->model->{self::CHECKBOXNAME}, $id)
             : $this->i18n->get('Unable to copy campaign %d', $this->model->{self::CHECKBOXNAME});
-        header('Location: ' . new CommonPlugin_PageURL(null, array('type' => 'draft')));
+        header('Location: ' . new phpList\plugin\Common\PageURL(null, array('type' => 'draft')));
         exit;
     }
 
@@ -118,17 +118,17 @@ class CampaignsPlugin_Controller_Campaigns extends CommonPlugin_Controller
     {
         $r = $this->dao->deleteDraftMessages();
         $_SESSION[self::PLUGIN]['actionResult'] = $this->i18n->get('%d draft campaigns deleted', $r);
-        header('Location: ' . new CommonPlugin_PageURL(null, array('type' => 'draft')));
+        header('Location: ' . new phpList\plugin\Common\PageURL(null, array('type' => 'draft')));
         exit;
     }
 
     protected function actionDefault()
     {
-        $toolbar = new CommonPlugin_Toolbar($this);
+        $toolbar = new phpList\plugin\Common\Toolbar($this);
         $toolbar->addHelpButton('campaigns');
         $access = accessLevel('messages');
         $owner = ($access == 'owner') ? $_SESSION['logindetails']['id'] : null;
-        $listing = new CommonPlugin_Listing(
+        $listing = new phpList\plugin\Common\Listing(
             $this,
             new CampaignsPlugin_CampaignsPopulator($owner, $this->model->type, $this->dao, $this->i18n)
         );

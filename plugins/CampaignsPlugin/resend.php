@@ -30,4 +30,4 @@ if (!phplistPlugin::isEnabled('CommonPlugin')) {
 
     return;
 }
-CommonPlugin_Main::run(new CampaignsPlugin_ControllerFactory());
+phpList\plugin\Common\Main::run(new CampaignsPlugin_ControllerFactory());

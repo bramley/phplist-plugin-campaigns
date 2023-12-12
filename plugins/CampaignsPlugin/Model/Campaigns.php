@@ -25,7 +25,7 @@
 /**
  * This class holds the properties entered in the form.
  */
-class CampaignsPlugin_Model_Campaigns extends CommonPlugin_Model
+class CampaignsPlugin_Model_Campaigns extends phpList\plugin\Common\Model
 {
     /*
      *    Inherited protected variables
