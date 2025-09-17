@@ -42,16 +42,9 @@ class CampaignsPlugin extends phplistPlugin
      */
     public function dependencyCheck()
     {
-        global $plugins;
-
-        return array(
-            'Common plugin v3.8.0 or later installed' => (
-                phpListPlugin::isEnabled('CommonPlugin')
-                && version_compare($plugins['CommonPlugin']->version, '3.8.0') >= 0
-            ),
-            'PHP version 5.4.0 or greater' => version_compare(PHP_VERSION, '5.4') > 0,
-            'phpList version 3.3.2 or later' => version_compare(VERSION, '3.3.2') >= 0,
-        );
+        return [
+            'Common plugin must be enabled' => phpListPlugin::isEnabled('CommonPlugin'),
+        ];
     }
 
     /**
