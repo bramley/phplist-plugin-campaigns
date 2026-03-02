@@ -81,13 +81,13 @@ class CampaignsPlugin_Controller_Resend extends phpList\plugin\Common\Controller
         }
 
         return array(
-                'campaignID' => $campaignID,
-                'deleted' => $deleted,
-                'bounced' => $bounced,
-                'ignored' => $ignored,
-                'notsent' => $notsent,
-                'requeued' => $requeued,
-                'invalid' => $invalid,
+            'campaignID' => $campaignID,
+            'deleted' => $deleted,
+            'bounced' => $bounced,
+            'ignored' => $ignored,
+            'notsent' => $notsent,
+            'requeued' => $requeued,
+            'invalid' => $invalid,
         );
     }
 
