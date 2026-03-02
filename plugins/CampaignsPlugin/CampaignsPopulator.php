@@ -135,7 +135,7 @@ class CampaignsPlugin_CampaignsPopulator implements phpList\plugin\Common\IPopul
                 array('class' => 'button', 'title' => 'view')
             );
 
-            if ($type == 'sent') {
+            if ($type == 'sent' || $type == 'active') {
                 $resendLink = new phpList\plugin\Common\PageLink(
                     new phpList\plugin\Common\PageURL('resend', array('pi' => self::PLUGIN, 'action' => 'resendForm', 'campaignID' => $row['id'])),
                     'Resend',
