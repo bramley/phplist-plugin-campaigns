@@ -32,13 +32,13 @@ class CampaignsPlugin_DAO_Campaign extends phpList\plugin\Common\DAO\Message
     {
         switch ($type) {
             case 'active':
-                return array('inprocess', 'submitted', 'suspended');
+                return "'inprocess', 'submitted', 'suspended'";
                 break;
             case 'sent':
-                return array('sent');
+                return "'sent'";
                 break;
             default:
-                return array($type);
+                return "'$type'";
         }
     }
 
@@ -46,17 +46,12 @@ class CampaignsPlugin_DAO_Campaign extends phpList\plugin\Common\DAO\Message
     {
         $statuses = $this->typeToStatus($type);
         $conditions = array();
+        $conditions[] = "(m.status IN ($statuses))";
 
         if ($owner) {
             $conditions[] = "(m.owner = $owner)";
         }
-
-        if (count($statuses) > 0) {
-            $values = implode(',', array_map(array($this, 'wrapQuotes'), $statuses));
-            $conditions[] = "(m.status IN ($values))";
-        }
-
-        $where = count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '';
+        $where = 'WHERE ' . implode(' AND ', $conditions);
         $sql =
             "SELECT m.*,
                 (SELECT GROUP_CONCAT(l.name SEPARATOR '|')
@@ -76,19 +71,15 @@ class CampaignsPlugin_DAO_Campaign extends phpList\plugin\Common\DAO\Message
     {
         $statuses = $this->typeToStatus($type);
         $conditions = array();
+        $conditions[] = "(m.status IN ($statuses))";
 
         if ($owner) {
             $conditions[] = "(owner = $owner)";
         }
 
-        if (count($statuses) > 0) {
-            $values = implode(',', array_map(array($this, 'wrapQuotes'), $statuses));
-            $conditions[] = "(status IN ($values))";
-        }
-
-        $where = count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '';
+        $where = 'WHERE ' . implode(' AND ', $conditions);
         $sql =
-            "SELECT count(*) AS t 
+            "SELECT count(*) AS t
             FROM {$this->tables['message']} m
             $where";
 
